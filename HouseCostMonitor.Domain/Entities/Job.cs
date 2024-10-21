@@ -1,7 +1,7 @@
 ﻿
 namespace HouseCostMonitor.Domain.Entities;
 
-public class RemainingJob
+public class Job
 {
     public Guid Id { get; set; }
     public string Description { get; set; }
