@@ -1,12 +1,15 @@
 ﻿
+using HouseCostMonitor.Domain.Entities.Base;
+using HouseCostMonitor.Domain.Enums;
+
 namespace HouseCostMonitor.Domain.Entities;
 
-public class Job
+public class Job : BaseEntity
 {
-    public Guid Id { get; set; }
     public string Description { get; set; }
     public TimeSpan EstimatedTime { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime LastModified { get; set; }
     public string CreatedBy { get; set; }
+    public JobStatus JobStatus { get; set; }
+    public Guid? UserId { get; set; }
+    public List<Expense> Expenses { get; set; } = [];
 }

@@ -4,6 +4,7 @@ using HouseCostMonitor.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseCostMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(HouseCostMonitorDbContext))]
-    partial class HouseCostMonitorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241022220635_RemoveJobCategory")]
+    partial class RemoveJobCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,7 +140,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -200,7 +203,9 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 {
                     b.HasOne("HouseCostMonitor.Domain.Entities.User", null)
                         .WithMany("Jobs")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HouseCostMonitor.Domain.Entities.Invoice", b =>

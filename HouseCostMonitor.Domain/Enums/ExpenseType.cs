@@ -1,6 +1,6 @@
 ﻿namespace HouseCostMonitor.Domain.Enums;
 
-public enum ExpenseCategory
+public enum ExpenseType
 {
     Materials,
     Furniture,

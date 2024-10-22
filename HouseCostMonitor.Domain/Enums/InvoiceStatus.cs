@@ -1,6 +1,6 @@
 ﻿namespace HouseCostMonitor.Domain.Enums;
 
-public enum Status
+public enum InvoiceStatus
 {
     Pending,
     Paid,

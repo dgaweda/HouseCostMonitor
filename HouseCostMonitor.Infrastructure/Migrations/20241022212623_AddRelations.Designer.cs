@@ -4,6 +4,7 @@ using HouseCostMonitor.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseCostMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(HouseCostMonitorDbContext))]
-    partial class HouseCostMonitorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241022212623_AddRelations")]
+    partial class AddRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,10 +43,10 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("InvoiceId")
+                    b.Property<Guid>("InvoiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("JobId")
+                    b.Property<Guid>("JobId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("LastModified")
@@ -59,15 +62,13 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalCost")
-                        .HasPrecision(25, 2)
-                        .HasColumnType("decimal(25,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasPrecision(25, 2)
-                        .HasColumnType("decimal(25,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -103,8 +104,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("TotalCost")
-                        .HasPrecision(25, 2)
-                        .HasColumnType("decimal(25,2)");
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -137,7 +137,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                     b.Property<DateTime>("LastModified")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -189,18 +189,52 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 {
                     b.HasOne("HouseCostMonitor.Domain.Entities.Invoice", null)
                         .WithMany("Expenses")
-                        .HasForeignKey("InvoiceId");
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("HouseCostMonitor.Domain.Entities.Job", null)
                         .WithMany("Expenses")
-                        .HasForeignKey("JobId");
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HouseCostMonitor.Domain.Entities.Job", b =>
                 {
                     b.HasOne("HouseCostMonitor.Domain.Entities.User", null)
                         .WithMany("Jobs")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("HouseCostMonitor.Domain.ValueObjects.JobCategory", "JobCategory", b1 =>
+                        {
+                            b1.Property<Guid>("JobId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("CreatedAt")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("LastModified")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("JobId");
+
+                            b1.ToTable("JobCategories");
+
+                            b1.WithOwner()
+                                .HasForeignKey("JobId");
+                        });
+
+                    b.Navigation("JobCategory")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HouseCostMonitor.Domain.Entities.Invoice", b =>
