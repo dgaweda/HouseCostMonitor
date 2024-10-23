@@ -5,17 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HouseCostMonitor.Infrastructure.Persistence;
 
-internal class HouseCostMonitorDbContext : DbContext
+internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbContext> options) : DbContext(options)
 {
     internal DbSet<User> Users { get; set; }
     internal DbSet<Invoice> Invoices { get; set; }
     internal DbSet<Job> Jobs { get; set; }
     internal DbSet<Expense> Expenses { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HouseCostMonitorDb;Trusted_Connection=True;");
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HouseCostMonitor.Application\HouseCostMonitor.Application.csproj" />
+    <ProjectReference Include="..\HouseCostMonitor.Infrastructure\HouseCostMonitor.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
