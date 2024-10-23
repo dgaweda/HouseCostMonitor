@@ -20,6 +20,11 @@ internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbCont
             .HasMany(user => user.Jobs)
             .WithOne()
             .HasForeignKey(job => job.UserId);
+        
+        modelBuilder.Entity<User>()
+            .HasMany(user => user.Expenses)
+            .WithOne()
+            .HasForeignKey(expense => expense.UserId);
 
         modelBuilder.Entity<Job>()
             .HasMany(job => job.Expenses)

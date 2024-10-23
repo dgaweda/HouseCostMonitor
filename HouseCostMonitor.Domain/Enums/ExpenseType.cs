@@ -5,5 +5,6 @@ public enum ExpenseType
     Materials,
     Furniture,
     Tools,
-    Work
+    Work,
+    Labor
 }
