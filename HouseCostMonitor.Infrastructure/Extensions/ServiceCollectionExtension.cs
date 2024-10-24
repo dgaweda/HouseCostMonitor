@@ -1,4 +1,6 @@
+using HouseCostMonitor.Domain.Repositories;
 using HouseCostMonitor.Infrastructure.Persistence;
+using HouseCostMonitor.Infrastructure.Repositories;
 using HouseCostMonitor.Infrastructure.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,5 +16,6 @@ public static class ServiceCollectionExtension
         services.AddDbContext<HouseCostMonitorDbContext>(options => options.UseSqlServer(connectionString));
 
         services.AddScoped<IHouseCostMonitorDbSeeder, HouseCostMonitorDbSeeder>();
+        services.AddScoped<IExpenseRepository, ExpenseRepository>();
     }
 }
