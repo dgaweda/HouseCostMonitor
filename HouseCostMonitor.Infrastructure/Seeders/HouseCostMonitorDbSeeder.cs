@@ -147,7 +147,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             new Job
             {
                 Description = "Plastering",
-                EstimatedTime = new TimeSpan(40, 0, 0), // 40 hours
+                Duration = new TimeSpan(7, 0, 0, 0), // 7 days
                 CreatedBy = "John Doe",
                 JobStatus = JobStatus.InProgress,
                 UserId = user.Id,
@@ -161,7 +161,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             new Job
             {
                 Description = "Tiling",
-                EstimatedTime = new TimeSpan(24, 0, 0), // 24 hours
+                Duration = new TimeSpan(9, 0, 0, 0), // 9 days
                 CreatedBy = "Jane Smith",
                 JobStatus = JobStatus.Done,
                 Expenses =
@@ -174,7 +174,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             new Job
             {
                 Description = "Painting",
-                EstimatedTime = new TimeSpan(30, 0, 0), // 30 hours
+                Duration = new TimeSpan(2, 0, 0, 0), // 2 days
                 CreatedBy = "Mike Johnson",
                 JobStatus = JobStatus.Pending,
                 Expenses =

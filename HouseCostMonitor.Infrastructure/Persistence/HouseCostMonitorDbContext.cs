@@ -1,6 +1,7 @@
 ﻿using HouseCostMonitor.Domain.Entities;
 using HouseCostMonitor.Domain.Entities.Base;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HouseCostMonitor.Infrastructure.Persistence;
 
