@@ -10,6 +10,11 @@ public class Invoice : BaseEntity
     public DateTime DueDate { get; set; }
     public InvoiceStatus InvoiceStatus { get; set; }
     public string? DocumentUrl { get; set; }
-    
-    public List<Expense> Expenses { get; set; }
+
+    public List<Expense> Expenses { get; set; } = [];
+
+    public void CalculateTotalCost()
+    {
+        TotalCost = Expenses.Sum(x => x.TotalCost);
+    }
 }

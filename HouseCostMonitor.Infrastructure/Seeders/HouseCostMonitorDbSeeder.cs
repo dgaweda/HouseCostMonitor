@@ -1,111 +1,107 @@
 using HouseCostMonitor.Domain.Entities;
 using HouseCostMonitor.Domain.Enums;
 using HouseCostMonitor.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace HouseCostMonitor.Infrastructure.Seeders;
 
-internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext)
+internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : IHouseCostMonitorDbSeeder
 {
     public async Task Seed()
     {
         if (await dbContext.Database.CanConnectAsync())
         {
-            var expenses = GetExpenseSeedData();
-            var jobs = GetJobSeedData(expenses);
-            
-            if (!dbContext.Expenses.Any())
-            {
-                await dbContext.Expenses.AddRangeAsync(expenses);
-            }
+            var user = GetUserSeedData();
+            var expenses = GetExpenseSeedData(user);
+            var jobs = GetJobSeedData(expenses, user);
+            var invoices = GetInvoiceSeedData(expenses);
 
-            if (!dbContext.Invoices.Any())
-            {
-                await dbContext.Invoices.AddRangeAsync(GetInvoiceSeedData(expenses));
-            }
+            user.Jobs = [jobs[0]];
+            user.Expenses = [expenses[0]];
 
-            if (!dbContext.Jobs.Any())
-            {
-                await dbContext.Jobs.AddRangeAsync(GetJobSeedData(expenses));
-            }
-
-            if (!dbContext.Users.Any())
-            {
-                await dbContext.Users.AddAsync(GetUserSeedData(jobs, expenses));
-            }
+            await AddIfNotExistAsync(dbContext.Expenses, expenses);
+            await AddIfNotExistAsync(dbContext.Invoices, invoices);
+            await AddIfNotExistAsync(dbContext.Jobs, jobs);
+            await AddIfNotExistAsync(dbContext.Users, [user]);
 
             await dbContext.SaveChangesAsync();
         }
     }
 
-    private static List<Expense> GetExpenseSeedData() =>
+    private async Task AddIfNotExistAsync<T>(DbSet<T> dbSet, IEnumerable<T> entities) where T : class
+    {
+        if (!dbSet.Any())
+        {
+            await dbSet.AddRangeAsync(entities);
+        }
+    }
+
+    private static List<Expense> GetExpenseSeedData(User user) =>
     [
          new Expense
         {
             Type = ExpenseType.Materials,
-            Description = "Cement bags for foundation",
-            DateIncurred = new DateTime(2024, 10, 01),
-            UnitPrice = 8.50m,
-            Quantity = 100,
-            TotalCost = 850m,
-            Supplier = "Construction Supplies Ltd.",
+            Description = "Radiator - Bathrooms 120x60",
+            UnitPrice = 400,
+            Quantity = 2,
+            Supplier = "Allegro",
             PurchaseDate = new DateTime(2024, 09, 30),
-            UserId = Guid.NewGuid(),
+            UserId = user.Id,
             JobId = null,
             InvoiceId = null
         },
         new Expense
         {
-            Type = ExpenseType.Labor,
-            Description = "Plumbing services",
-            DateIncurred = new DateTime(2024, 10, 05),
-            UnitPrice = 25m,
-            Quantity = 8,
-            TotalCost = 200m,
-            Supplier = "QuickFix Plumbing",
+            Type = ExpenseType.Materials,
+            Description = "Gypsum - Bag",
+            UnitPrice = 80m,
+            Quantity = 10,
+            Supplier = "BricoMarche",
             PurchaseDate = new DateTime(2024, 10, 03),
-            UserId = Guid.NewGuid(),
             JobId = null,
             InvoiceId = null
         },
         new Expense
         {
             Type = ExpenseType.Tools,
-            Description = "Rental of cement mixer",
-            DateIncurred = new DateTime(2024, 10, 10),
-            UnitPrice = 45m,
-            Quantity = 3,
-            TotalCost = 135m,
-            Supplier = "Equipment Rentals Inc.",
+            Description = "Gypsum tools",
+            UnitPrice = 120m,
+            Quantity = 2,
+            Supplier = "Allegro",
             PurchaseDate = new DateTime(2024, 10, 08),
-            UserId = Guid.NewGuid(),
-            JobId = Guid.NewGuid(),
-            InvoiceId = null
-        },
-        new Expense
-        {
-            Type = ExpenseType.Materials,
-            Description = "Steel rods",
-            DateIncurred = new DateTime(2024, 10, 15),
-            UnitPrice = 12m,
-            Quantity = 50,
-            TotalCost = 600m,
-            Supplier = "SteelWorks Co.",
-            PurchaseDate = new DateTime(2024, 10, 14),
-            UserId = Guid.NewGuid(),
             JobId = null,
             InvoiceId = null
         },
         new Expense
         {
-            Type = ExpenseType.Labor,
-            Description = "Electrician services",
-            DateIncurred = new DateTime(2024, 10, 20),
-            UnitPrice = 30m,
+            Type = ExpenseType.Materials,
+            Description = "Floor panels - 1 package 1.5m",
+            UnitPrice = 150m,
+            Quantity = 75,
+            Supplier = "BricoMarche",
+            PurchaseDate = new DateTime(2024, 10, 14),
+            JobId = null,
+            InvoiceId = null
+        },
+        new Expense
+        {
+            Type = ExpenseType.Materials,
+            Description = "Tiles - 60x60 - 1pkg - 5m2",
+            UnitPrice = 130m,
             Quantity = 10,
-            TotalCost = 300m,
             Supplier = "PowerFix Electric",
             PurchaseDate = new DateTime(2024, 10, 19),
-            UserId = Guid.NewGuid(),
+            JobId = null,
+            InvoiceId = null
+        },
+        new Expense
+        {
+            Type = ExpenseType.Materials,
+            Description = "Paint - 20l",
+            UnitPrice = 50m,
+            Quantity = 10,
+            Supplier = "MROWKA",
+            PurchaseDate = new DateTime(2024, 10, 19),
             JobId = null,
             InvoiceId = null
         }
@@ -116,7 +112,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext)
         {
             new()
             {
-                TotalCost = 850m,
                 IssuedDate = new DateTime(2024, 10, 02),
                 DueDate = new DateTime(2024, 10, 20),
                 InvoiceStatus = InvoiceStatus.Paid,
@@ -125,7 +120,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext)
             },
             new()
             {
-                TotalCost = 800m,
                 IssuedDate = new DateTime(2024, 10, 06),
                 DueDate = new DateTime(2024, 10, 25),
                 InvoiceStatus = InvoiceStatus.Pending,
@@ -138,7 +132,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext)
             },
             new()
             {
-                TotalCost = 900m,
                 IssuedDate = new DateTime(2024, 10, 16),
                 DueDate = new DateTime(2024, 11, 05),
                 InvoiceStatus = InvoiceStatus.Pending,
@@ -147,62 +140,60 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext)
             }
         };
     }
-    private static List<Job> GetJobSeedData(IReadOnlyList<Expense> expenses)
+    private static List<Job> GetJobSeedData(IReadOnlyList<Expense> expenses, User user)
     {
         return
         [
             new Job
             {
-                Description = "Foundation work",
+                Description = "Plastering",
                 EstimatedTime = new TimeSpan(40, 0, 0), // 40 hours
                 CreatedBy = "John Doe",
                 JobStatus = JobStatus.InProgress,
-                UserId = expenses[0].UserId, // Assuming first expense has associated UserId
+                UserId = user.Id,
                 Expenses =
                 [
-                    expenses[0] // Cement bags expense
+                    expenses[1],
+                    expenses[2]
                 ]
             },
 
             new Job
             {
-                Description = "Plumbing installation",
+                Description = "Tiling",
                 EstimatedTime = new TimeSpan(24, 0, 0), // 24 hours
                 CreatedBy = "Jane Smith",
                 JobStatus = JobStatus.Done,
-                UserId = expenses[1].UserId, // Matching the UserId for plumbing service
-                Expenses = new List<Expense>
-                {
-                    expenses[1], // Plumbing services
-                }
+                Expenses =
+                [
+                    expenses[3],
+                    expenses[4]
+                ]
             },
 
             new Job
             {
-                Description = "Electrical wiring",
+                Description = "Painting",
                 EstimatedTime = new TimeSpan(30, 0, 0), // 30 hours
                 CreatedBy = "Mike Johnson",
                 JobStatus = JobStatus.Pending,
-                UserId = expenses[4].UserId, // Electrician service
-                Expenses = new List<Expense>
-                {
-                    expenses[4], // Electrician services
-                }
+                Expenses =
+                [
+                    expenses[5]
+                ]
             }
         ];
     }
-    private static User GetUserSeedData(List<Job> jobs, List<Expense> expenses)
+    private static User GetUserSeedData()
     {
         return new User
         {
             Username = "daga",
-            PasswordHash = "hashed_password_example", // Replace with a real hashed password
-            Email = "johndoe@example.com",
+            PasswordHash = "hashed_password_example",
+            Email = "daga@example.com",
             Role = Role.Admin,
-            Fullname = "Dariusz Gawęda",
-            LastLoginDate = null,
-            Jobs = jobs,
-            Expenses = expenses
+            Fullname = "Dariusz Gaweda",
+            LastLoginDate = null
         };
     }
     
