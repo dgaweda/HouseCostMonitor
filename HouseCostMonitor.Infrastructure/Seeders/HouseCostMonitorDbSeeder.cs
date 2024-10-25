@@ -23,6 +23,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             await AddIfNotExistAsync(dbContext.Invoices, invoices);
             await AddIfNotExistAsync(dbContext.Jobs, jobs);
             await AddIfNotExistAsync(dbContext.Users, [user]);
+            
 
             await dbContext.SaveChangesAsync();
         }
