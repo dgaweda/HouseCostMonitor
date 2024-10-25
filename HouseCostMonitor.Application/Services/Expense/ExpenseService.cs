@@ -1,7 +1,7 @@
 using HouseCostMonitor.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace HouseCostMonitor.Application.Expense;
+namespace HouseCostMonitor.Application.Services.Expense;
 
 internal class ExpenseService(IExpenseRepository expenseRepository, ILogger<ExpenseService> logger) : IExpenseService
 {

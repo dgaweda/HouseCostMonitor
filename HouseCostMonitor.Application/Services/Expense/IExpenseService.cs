@@ -1,4 +1,4 @@
-namespace HouseCostMonitor.Application.Expense;
+namespace HouseCostMonitor.Application.Services.Expense;
 
 public interface IExpenseService
 {
