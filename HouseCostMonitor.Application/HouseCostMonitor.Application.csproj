@@ -18,9 +18,6 @@
 
     <ItemGroup>
       <Folder Include="Services\" />
-      <Folder Include="Services\Expense\Profiles\" />
-      <Folder Include="Services\Invoice\Profiles\" />
-      <Folder Include="Services\Job\Profiles\" />
     </ItemGroup>
 
 </Project>

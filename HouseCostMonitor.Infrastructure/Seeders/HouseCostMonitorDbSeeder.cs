@@ -193,7 +193,8 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             PasswordHash = "hashed_password_example",
             Email = "daga@example.com",
             Role = Role.Admin,
-            Fullname = "Dariusz Gaweda",
+            Firstname = "Dariusz",
+            Lastname = "Gaweda",
             LastLoginDate = null
         };
     }

@@ -5,10 +5,10 @@ using HouseCostMonitor.Domain.Enums;
 
 public record InvoiceDto
 {
-    public decimal TotalCost { get; set; }
-    public DateTime IssuedDate { get; set; }
-    public DateTime DueDate { get; set; }
-    public InvoiceStatus InvoiceStatus { get; set; }
-    public string? DocumentUrl { get; set; }
-    public List<ExpenseDto> Expenses { get; set; } = [];
+    public decimal TotalCost { get; init; }
+    public DateTime IssuedDate { get; init; }
+    public DateTime DueDate { get; init; }
+    public InvoiceStatus InvoiceStatus { get; init; }
+    public string? DocumentUrl { get; init; }
+    public List<ExpenseDto> Expenses { get; init; } = [];
 }

@@ -5,10 +5,9 @@ using HouseCostMonitor.Domain.Enums;
 
 public record JobDto
 {
-    public string Description { get; set; } = default!;
-    public TimeSpan? Duration { get; set; }
-    public string CreatedByFirstname { get; set; } = default!;
-    public string CreatedByLastname { get; set; } = default!;
-    public JobStatus JobStatus { get; set; }
-    public List<ExpenseDto> Expenses { get; set; } = [];
+    public string Description { get; init; } = default!;
+    public TimeSpan? Duration { get; init; }
+    public string CreatedBy { get; set; } = default!;
+    public JobStatus JobStatus { get; init; }
+    public List<ExpenseDto> Expenses { get; init; } = [];
 }

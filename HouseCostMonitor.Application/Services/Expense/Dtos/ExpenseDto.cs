@@ -4,7 +4,6 @@ namespace HouseCostMonitor.Application.Services.Expense.Dtos;
 
 public record ExpenseDto
 {
-    public Guid Id { get; init; }
     public ExpenseType Type { get; init; }
     public string? Description { get; init; }
     public decimal UnitPrice { get; init; }
