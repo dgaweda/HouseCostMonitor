@@ -2,7 +2,8 @@ using HouseCostMonitor.Domain.Entities;
 
 namespace HouseCostMonitor.Domain.Repositories;
 
-public interface IExpenseRepository
+using HouseCostMonitor.Domain.Repositories.Base;
+
+public interface IExpenseRepository : IBaseRepository<Expense>
 {
-    Task<IEnumerable<Expense>> GetAllAsync();
 }

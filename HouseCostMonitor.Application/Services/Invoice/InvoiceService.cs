@@ -2,9 +2,9 @@ using HouseCostMonitor.Application.Services.Invoice.Dtos;
 
 namespace HouseCostMonitor.Application.Services.Invoice;
 
-internal class InvoiceService : IInvoiceService
+internal class InvoiceService(IInvoic) : IInvoiceService
 {
-    public async Task<IEnumerable<InvoiceDto>> GetAll()
+    Task<IEnumerable<InvoiceDto>> GetAllInvoices();
     {
         throw new NotImplementedException();
     }

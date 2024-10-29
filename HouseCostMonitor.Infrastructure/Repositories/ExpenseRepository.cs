@@ -5,11 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HouseCostMonitor.Infrastructure.Repositories;
 
-internal class ExpenseRepository(HouseCostMonitorDbContext dbContext) : IExpenseRepository
+using HouseCostMonitor.Infrastructure.Repositories.Base;
+
+internal class ExpenseRepository(HouseCostMonitorDbContext dbContext) : BaseRepository<Expense>(dbContext), IExpenseRepository
 {
-    public async Task<IEnumerable<Expense>> GetAllAsync()
-    {
-        var expenses = await dbContext.Expenses.ToListAsync();
-        return expenses;
-    }
 }
