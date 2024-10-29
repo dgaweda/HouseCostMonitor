@@ -4,5 +4,5 @@ namespace HouseCostMonitor.Application.Services.Job;
 
 public interface IJobService
 {
-    Task<IEnumerable<JobDto>> GetAllJobs();
+    Task<IEnumerable<JobDto>> GetAllJobs(CancellationToken cancellationToken = default);
 }

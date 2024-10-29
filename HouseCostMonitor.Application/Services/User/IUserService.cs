@@ -4,6 +4,6 @@ namespace HouseCostMonitor.Application.Services.User;
 
 public interface IUserService
 {
-    Task<IEnumerable<UserDto>> GetAllUsers();
-    Task<UserDto> GetCurrentUser();
+    Task<IEnumerable<UserDto>> GetAllUsers(CancellationToken cancellationToken = default);
+    Task<UserDto> GetCurrentUser(CancellationToken cancellationToken = default);
 }

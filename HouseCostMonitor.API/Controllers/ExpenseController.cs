@@ -8,8 +8,8 @@ namespace HouseCostMonitor.API.Controllers;
 public class ExpenseController(IExpenseService expenseService) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        return Ok(await expenseService.GetAllExpenses());
+        return Ok(await expenseService.GetAllExpenses(cancellationToken));
     }
 }

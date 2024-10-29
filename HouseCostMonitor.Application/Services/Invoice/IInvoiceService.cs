@@ -4,5 +4,5 @@ namespace HouseCostMonitor.Application.Services.Invoice;
 
 public interface IInvoiceService
 {
-    Task<IEnumerable<InvoiceDto>> GetAllInvoices();
+    Task<IEnumerable<InvoiceDto>> GetAllInvoices(CancellationToken cancellationToken = default);
 }

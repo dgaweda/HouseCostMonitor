@@ -9,20 +9,20 @@ using HouseCostMonitor.Domain.Repositories;
 
 internal class UserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository, IMapper mapper) : IUserService
 {
-    public async Task<IEnumerable<UserDto>> GetAllUsers()
+    public async Task<IEnumerable<UserDto>> GetAllUsers(CancellationToken cancellationToken = default)
     {
-        return (await userRepository.GetAllAsync())
+        return (await userRepository.GetAllAsync(cancellationToken: cancellationToken))
             .AsQueryable()
             .ProjectTo<UserDto>(mapper.ConfigurationProvider);
     }
 
-    public async Task<UserDto> GetCurrentUser()
+    public async Task<UserDto> GetCurrentUser(CancellationToken cancellationToken = default)
     {
         var username = httpContextAccessor.HttpContext.User.Identity?.Name;
         if (string.IsNullOrWhiteSpace(username))
             throw new Exceptions.ApplicationException("Current user not found");
 
-        var user = await userRepository.GetAsync(x => x.Username == username);
+        var user = await userRepository.GetAsync(x => x.Username == username, cancellationToken);
         if (user is null)
             throw new Exceptions.ApplicationException("User not found");
 

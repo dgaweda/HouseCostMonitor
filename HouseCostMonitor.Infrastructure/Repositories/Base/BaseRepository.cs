@@ -12,51 +12,51 @@ internal class BaseRepository<T>(HouseCostMonitorDbContext dbContext) : IBaseRep
 {
     private readonly DbSet<T> _entity = dbContext.Set<T>();
     
-    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null)
+    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default)
     {
         if(filter == null)
-            return await _entity.ToListAsync();
+            return await _entity.ToListAsync(cancellationToken: cancellationToken);
 
-        return await _entity.Where(filter).ToListAsync();
+        return await _entity.Where(filter).ToListAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task<T?> GetByIdAsync(Guid id)
+    public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _entity.FirstOrDefaultAsync(x => x.Id == id);
+        return await _entity.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
     }
     
-    public async Task<T?> GetAsync(Expression<Func<T, bool>> filter)
+    public async Task<T?> GetAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
     {
-        return await _entity.FirstOrDefaultAsync(filter);
+        return await _entity.FirstOrDefaultAsync(filter, cancellationToken: cancellationToken);
     }
 
-    public async Task AddAsync(T entity)
+    public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
     {
-        await _entity.AddAsync(entity);
-        await dbContext.SaveChangesAsync();
+        await _entity.AddAsync(entity, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task AddManyAsync(List<T> entities)
+    public async Task AddManyAsync(List<T> entities, CancellationToken cancellationToken = default)
     {
         if (entities.IsNullOrEmpty())
             throw new RepositoryException("Can't add empty list");
         
-        await _entity.AddRangeAsync(entities);
-        await dbContext.SaveChangesAsync();
+        await _entity.AddRangeAsync(entities, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Guid> DeleteAsync(Guid id)
+    public async Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await _entity.Where(x => x.Id == id).ExecuteDeleteAsync();
+        await _entity.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken: cancellationToken);
 
         return id;
     }
 
-    public async Task<Guid> UpdateAsync(T entity)
+    public async Task<Guid> UpdateAsync(T entity, CancellationToken cancellationToken = default)
     {
         _entity.Attach(entity);
         dbContext.Entry(_entity).State = EntityState.Modified;
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
 
         return entity.Id;
     }

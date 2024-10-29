@@ -8,8 +8,8 @@ namespace HouseCostMonitor.API.Controllers;
 public class UserController(IUserService userService) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        return Ok(await userService.GetAllUsers());
+        return Ok(await userService.GetAllUsers(cancellationToken));
     }
 }

@@ -8,8 +8,8 @@ namespace HouseCostMonitor.API.Controllers;
 public class JobController(IJobService jobService) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        return Ok(await jobService.GetAllJobs());
+        return Ok(await jobService.GetAllJobs(cancellationToken));
     }
 }
