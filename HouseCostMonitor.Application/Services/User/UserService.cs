@@ -3,15 +3,29 @@ using Microsoft.AspNetCore.Http;
 
 namespace HouseCostMonitor.Application.Services.User;
 
-internal class UserService(IHttpContextAccessor httpContextAccessor) : IUserService
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HouseCostMonitor.Domain.Repositories;
+
+internal class UserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository, IMapper mapper) : IUserService
 {
-    public async Task<IEnumerable<UserDto>> GetAll()
+    public async Task<IEnumerable<UserDto>> GetAllUsers()
     {
-        throw new NotImplementedException();
+        return (await userRepository.GetAllAsync())
+            .AsQueryable()
+            .ProjectTo<UserDto>(mapper.ConfigurationProvider);
     }
 
     public async Task<UserDto> GetCurrentUser()
     {
-        throw new NotImplementedException();
+        var username = httpContextAccessor.HttpContext.User.Identity?.Name;
+        if (string.IsNullOrWhiteSpace(username))
+            throw new Exceptions.ApplicationException("Current user not found");
+
+        var user = await userRepository.GetAsync(x => x.Username == username);
+        if (user is null)
+            throw new Exceptions.ApplicationException("User not found");
+
+        return mapper.Map<UserDto>(user);
     }
 }

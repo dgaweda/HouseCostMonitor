@@ -2,10 +2,17 @@ using HouseCostMonitor.Application.Services.Invoice.Dtos;
 
 namespace HouseCostMonitor.Application.Services.Invoice;
 
-internal class InvoiceService(IInvoic) : IInvoiceService
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HouseCostMonitor.Domain.Repositories;
+
+internal class InvoiceService(IInvoiceRepository invoiceRepository, IMapper mapper) : IInvoiceService
 {
-    Task<IEnumerable<InvoiceDto>> GetAllInvoices();
+    public async Task<IEnumerable<InvoiceDto>> GetAllInvoices()
     {
-        throw new NotImplementedException();
+        return (await invoiceRepository.GetAllAsync())
+            .AsQueryable()
+            .ProjectTo<InvoiceDto>(mapper.ConfigurationProvider)
+            .ToList();
     }
 }

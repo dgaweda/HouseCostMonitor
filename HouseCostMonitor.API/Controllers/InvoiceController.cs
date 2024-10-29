@@ -1,4 +1,3 @@
-using HouseCostMonitor.Application.Services.Expense;
 using HouseCostMonitor.Application.Services.Invoice;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,11 +5,11 @@ namespace HouseCostMonitor.API.Controllers;
 
 [ApiController]
 [Route("api/invoice")]
-public class InvoiceController(IInvoiceService expenseService) : ControllerBase
+public class InvoiceController(IInvoiceService invoiceService) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await expenseService.GetAllExpenses());
+        return Ok(await invoiceService.GetAllInvoices());
     }
 }

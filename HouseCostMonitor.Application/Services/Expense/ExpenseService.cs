@@ -1,13 +1,18 @@
 using HouseCostMonitor.Domain.Repositories;
-using Microsoft.Extensions.Logging;
 
 namespace HouseCostMonitor.Application.Services.Expense;
 
-internal class ExpenseService(IExpenseRepository expenseRepository, ILogger<ExpenseService> logger) : IExpenseService
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HouseCostMonitor.Application.Services.Expense.Dtos;
+
+internal class ExpenseService(IExpenseRepository expenseRepository, IMapper mapper) : IExpenseService
 {
-    public async Task<IEnumerable<Domain.Entities.Expense>> GetAllExpenses()
+    public async Task<IEnumerable<ExpenseDto>> GetAllExpenses()
     {
-        logger.LogInformation("Getting all expenses");
-        return await expenseRepository.GetAllAsync();
+        return (await expenseRepository.GetAllAsync())
+            .AsQueryable()
+            .ProjectTo<ExpenseDto>(mapper.ConfigurationProvider)
+            .ToList();
     }
 }

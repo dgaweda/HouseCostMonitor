@@ -1,6 +1,8 @@
 namespace HouseCostMonitor.Application.Services.Expense;
 
+using HouseCostMonitor.Application.Services.Expense.Dtos;
+
 public interface IExpenseService
 {
-    Task<IEnumerable<Domain.Entities.Expense>> GetAllExpenses();
+    Task<IEnumerable<ExpenseDto>> GetAllExpenses();
 }

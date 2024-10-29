@@ -2,7 +2,6 @@ using HouseCostMonitor.Application.Services.Expense;
 using HouseCostMonitor.Application.Services.Invoice;
 using HouseCostMonitor.Application.Services.Job;
 using HouseCostMonitor.Application.Services.User;
-using HouseCostMonitor.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HouseCostMonitor.Application.Extensions;
