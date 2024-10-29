@@ -16,6 +16,10 @@ public static class ServiceCollectionExtension
         services.AddDbContext<HouseCostMonitorDbContext>(options => options.UseSqlServer(connectionString));
 
         services.AddScoped<IHouseCostMonitorDbSeeder, HouseCostMonitorDbSeeder>();
+        
         services.AddScoped<IExpenseRepository, ExpenseRepository>();
+        services.AddScoped<IJobRepository, JobRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
     }
 }
