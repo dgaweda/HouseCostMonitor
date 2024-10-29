@@ -13,7 +13,9 @@ var app = builder.Build();
 var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<IHouseCostMonitorDbSeeder>();
 await seeder.Seed();
+
 // Configure the HTTP request pipeline.
+app.AddSwagger();
 
 app.UseHttpsRedirection();
 

@@ -30,10 +30,12 @@ internal class BaseRepository<T>(HouseCostMonitorDbContext dbContext) : IBaseRep
         return await _entity.FirstOrDefaultAsync(filter, cancellationToken: cancellationToken);
     }
 
-    public async Task AddAsync(T entity, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddAsync(T entity, CancellationToken cancellationToken = default)
     {
         await _entity.AddAsync(entity, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        return entity.Id;
     }
 
     public async Task AddManyAsync(List<T> entities, CancellationToken cancellationToken = default)
