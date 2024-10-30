@@ -15,4 +15,14 @@ public class Job : BaseEntity
     public JobStatus JobStatus { get; set; }
     public Guid? UserId { get; set; }
     public List<Expense> Expenses { get; set; } = [];
+
+    public void SetJobStatus(JobStatus jobStatus)
+    {
+        JobStatus = jobStatus;
+    }
+
+    public void AddJobExpense(Expense expense)
+    {
+        Expenses.Add(expense);
+    }
 }

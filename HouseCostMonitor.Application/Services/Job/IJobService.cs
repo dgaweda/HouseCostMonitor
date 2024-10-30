@@ -10,7 +10,7 @@ public interface IJobService
     Task<IEnumerable<JobDto>> GetAllJobs(CancellationToken cancellationToken = default);
     Task<JobDto?> GetJob(Guid id, CancellationToken cancellationToken = default);
     Task<Guid> CreateJob(CreateJobDto createJobDto, CancellationToken cancellationToken = default);
-    Task<Guid> EditJobInformation(EditJobDto editJobDto, CancellationToken cancellationToken = default);
-    Task<Guid> EditJobStatus(Guid id, JobStatus jobStatus, CancellationToken cancellationToken = default);
+    Task<Guid> EditJobInformation(Guid id, EditJobDto editJobDto, CancellationToken cancellationToken = default);
+    Task<Guid> EditJobStatus(Guid jobId, JobStatus jobStatus, CancellationToken cancellationToken = default);
     Task<Guid> AddJobExpense(Guid id, CreateExpenseDto createExpenseDto, CancellationToken cancellationToken = default);
 }

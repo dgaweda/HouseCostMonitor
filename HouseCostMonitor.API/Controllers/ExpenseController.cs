@@ -27,4 +27,18 @@ public class ExpenseController(IExpenseService expenseService) : ControllerBase
         var id = await expenseService.CreateExpense(createExpenseDto, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id }, null);
     }
+    
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> RemoveExpense(Guid id, CancellationToken cancellationToken)
+    {
+        await expenseService.RemoveExpense(id, cancellationToken);
+        return Ok(id);
+    }
+    
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> EditExpense(Guid expenseId, EditExpenseDto editExpenseDto, CancellationToken cancellationToken)
+    {
+        var id = await expenseService.EditExpense(expenseId, editExpenseDto, cancellationToken);
+        return Ok(id);
+    }
 }

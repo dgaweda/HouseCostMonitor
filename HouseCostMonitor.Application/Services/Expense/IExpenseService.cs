@@ -8,5 +8,5 @@ public interface IExpenseService
     Task<ExpenseDto?> GetExpenseById(Guid id, CancellationToken cancellationToken = default);
     Task<Guid> CreateExpense(CreateExpenseDto createExpenseDto, CancellationToken cancellationToken = default);
     Task RemoveExpense(Guid id, CancellationToken cancellationToken = default);
-    Task<Guid> EditExpense(EditExpenseDto editExpenseDto, CancellationToken cancellationToken = default);
+    Task<Guid> EditExpense(Guid expenseId, EditExpenseDto editExpenseDto, CancellationToken cancellationToken = default);
 }

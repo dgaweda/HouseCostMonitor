@@ -30,7 +30,6 @@ internal class ExpenseService(IExpenseRepository expenseRepository, IMapper mapp
     public async Task<Guid> CreateExpense(CreateExpenseDto createExpenseDto, CancellationToken cancellationToken)
     {
         var expense = mapper.Map<Expense>(createExpenseDto);
-
         var id = await expenseRepository.AddAsync(expense, cancellationToken);
 
         return id;
@@ -38,11 +37,15 @@ internal class ExpenseService(IExpenseRepository expenseRepository, IMapper mapp
 
     public async Task RemoveExpense(Guid id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await expenseRepository.DeleteAsync(id, cancellationToken);
     }
 
-    public async Task<Guid> EditExpense(EditExpenseDto editExpenseDto, CancellationToken cancellationToken = default)
+    public async Task<Guid> EditExpense(Guid expenseId, EditExpenseDto editExpenseDto, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        editExpenseDto.Id = expenseId;
+        var expense = mapper.Map<Expense>(editExpenseDto);
+        var id = await expenseRepository.UpdateAsync(expense, cancellationToken);
+
+        return id;
     }
 }
