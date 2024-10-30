@@ -84,7 +84,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             Description = "Tiles - 60x60 - 1pkg - 5m2",
             UnitPrice = 130m,
             Quantity = 10,
-            Supplier = "PowerFix Electric",
+            Supplier = "KOMFORT",
             PurchaseDate = new DateTime(2024, 10, 19),
             JobId = null,
         },
