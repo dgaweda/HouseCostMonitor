@@ -15,4 +15,24 @@ public class User : BaseEntity
 
     public List<Job> Jobs { get; set; } = [];
     public List<Expense> Expenses { get; set; } = [];
+
+    public void AddJobs(IEnumerable<Job> jobs)
+    {
+        Jobs.AddRange(jobs);
+    }
+    
+    public void AddExpenses(IEnumerable<Expense> expenses)
+    {
+        Expenses.AddRange(expenses);
+    }
+
+    public void RemoveUserJobs(IEnumerable<Guid> jobIds)
+    {
+        Jobs.RemoveAll(job => jobIds.Contains(job.Id));
+    }
+    
+    public void RemoveUserExpenses(IEnumerable<Guid> expenseIds)
+    {
+        Expenses.RemoveAll(job => expenseIds.Contains(job.Id));
+    }
 }

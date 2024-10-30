@@ -5,8 +5,10 @@ namespace HouseCostMonitor.Application.Services.User;
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HouseCostMonitor.Application.Exceptions;
 using HouseCostMonitor.Application.Services.Expense.Dtos;
 using HouseCostMonitor.Application.Services.Job.Dtos;
+using HouseCostMonitor.Domain.Entities;
 using HouseCostMonitor.Domain.Repositories;
 
 internal class UserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository, IMapper mapper) : IUserService
@@ -16,6 +18,12 @@ internal class UserService(IHttpContextAccessor httpContextAccessor, IUserReposi
         return (await userRepository.GetAllAsync(cancellationToken: cancellationToken))
             .AsQueryable()
             .ProjectTo<UserDto>(mapper.ConfigurationProvider);
+    }
+
+    public async Task<UserDto?> GetUser(Guid id, CancellationToken cancellationToken = default)
+    {
+        var user = await userRepository.GetByIdAsync(id, cancellationToken);
+        return user is null ? null : mapper.Map<UserDto>(user);
     }
 
     public async Task<UserDto> GetCurrentUser(CancellationToken cancellationToken = default)
@@ -33,26 +41,58 @@ internal class UserService(IHttpContextAccessor httpContextAccessor, IUserReposi
 
     public async Task<Guid> CreateUser(CreateUserDto createUserDto, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var user = mapper.Map<User>(createUserDto);
+        var id = await userRepository.AddAsync(user, cancellationToken);
+        return id;
     }
 
     public async Task<Guid> AddUserJobs(Guid userId, IEnumerable<JobDto> jobDtos, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+        if (user is null)
+            throw new ApplicationException($"User with id - {userId} - Not found");
+        
+        var jobs = mapper.Map<IEnumerable<Job>>(jobDtos);
+        user.AddJobs(jobs);
+
+        var id = await userRepository.UpdateAsync(user, cancellationToken);
+        return id;
     }
 
-    public async Task<Guid> AddUserExpenses(Guid userId, IEnumerable<ExpenseDto> jobDtos, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddUserExpenses(Guid userId, IEnumerable<ExpenseDto> expenseDtos, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+        if (user is null)
+            throw new ApplicationException($"User with id - {userId} - Not found");
+        
+        var expenses = mapper.Map<IEnumerable<Expense>>(expenseDtos);
+        user.AddExpenses(expenses);
+
+        var id = await userRepository.UpdateAsync(user, cancellationToken);
+        return id;
     }
 
     public async Task<Guid> RemoveUserJobs(Guid userId, IEnumerable<Guid> jobsIds, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+        if (user is null)
+            throw new ApplicationException($"User with id - {userId} - Not found");
+        
+        user.RemoveUserJobs(jobsIds);
+
+        var id = await userRepository.UpdateAsync(user, cancellationToken);
+        return id;
     }
 
     public async Task<Guid> RemoveUserExpenses(Guid userId, IEnumerable<Guid> expensesIds, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken);
+        if (user is null)
+            throw new ApplicationException($"User with id - {userId} - Not found");
+        
+        user.RemoveUserExpenses(expensesIds);
+
+        var id = await userRepository.UpdateAsync(user, cancellationToken);
+        return id;
     }
 }

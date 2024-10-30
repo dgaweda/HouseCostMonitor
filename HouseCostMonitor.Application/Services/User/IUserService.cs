@@ -8,6 +8,7 @@ using HouseCostMonitor.Application.Services.Job.Dtos;
 public interface IUserService
 {
     Task<IEnumerable<UserDto>> GetAllUsers(CancellationToken cancellationToken = default);
+    Task<UserDto?> GetUser(Guid id, CancellationToken cancellationToken = default);
     Task<UserDto> GetCurrentUser(CancellationToken cancellationToken = default);
     Task<Guid> CreateUser(CreateUserDto createUserDto, CancellationToken cancellationToken = default);
     Task<Guid> AddUserJobs(Guid userId, IEnumerable<JobDto> jobDtos, CancellationToken cancellationToken = default);

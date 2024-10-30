@@ -21,8 +21,7 @@ internal class InvoiceService(IInvoiceRepository invoiceRepository, IMapper mapp
     public async Task<InvoiceDto?> GetInvoice(Guid id, CancellationToken cancellationToken = default)
     {
         var invoice = await invoiceRepository.GetByIdAsync(id, cancellationToken);
-
-        return mapper.Map<InvoiceDto>(invoice);
+        return invoice is null ? null : mapper.Map<InvoiceDto>(invoice);
     }
 
     public async Task<Guid> EditInvoice(EditInvoiceDto editInvoiceDto, CancellationToken cancellationToken = default)
