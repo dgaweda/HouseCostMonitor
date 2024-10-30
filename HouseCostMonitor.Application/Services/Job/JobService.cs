@@ -38,7 +38,7 @@ internal class JobService(IJobRepository jobRepository, IMapper mapper) : IJobSe
         throw new NotImplementedException();
     }
 
-    public async Task<Guid> AddJobExpense(Guid id, AddExpenseDto addExpenseDto, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddJobExpense(Guid id, CreateExpenseDto createExpenseDto, CancellationToken cancellationToken = default)
     {
         throw new NotImplementedException();
     }

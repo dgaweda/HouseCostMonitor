@@ -27,9 +27,9 @@ internal class ExpenseService(IExpenseRepository expenseRepository, IMapper mapp
         return mapper.Map<ExpenseDto>(expense);
     }
 
-    public async Task<Guid> CreateExpense(AddExpenseDto addExpenseDto, CancellationToken cancellationToken)
+    public async Task<Guid> CreateExpense(CreateExpenseDto createExpenseDto, CancellationToken cancellationToken)
     {
-        var expense = mapper.Map<Expense>(addExpenseDto);
+        var expense = mapper.Map<Expense>(createExpenseDto);
 
         var id = await expenseRepository.AddAsync(expense, cancellationToken);
 

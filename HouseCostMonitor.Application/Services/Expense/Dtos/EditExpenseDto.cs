@@ -11,6 +11,5 @@ public record EditExpenseDto
     public int Quantity { get; init; }
     public string? Supplier { get; init; }
     public DateTime PurchaseDate { get; init; }
-    public decimal TotalCost { get; init; }
     public Currency Currency { get; init; }
 }

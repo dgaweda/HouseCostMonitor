@@ -12,5 +12,5 @@ public interface IJobService
     Task<Guid> CreateJob(CreateJobDto createJobDto, CancellationToken cancellationToken = default);
     Task<Guid> EditJobInformation(EditJobDto editJobDto, CancellationToken cancellationToken = default);
     Task<Guid> EditJobStatus(Guid id, JobStatus jobStatus, CancellationToken cancellationToken = default);
-    Task<Guid> AddJobExpense(Guid id, AddExpenseDto addExpenseDto, CancellationToken cancellationToken = default);
+    Task<Guid> AddJobExpense(Guid id, CreateExpenseDto createExpenseDto, CancellationToken cancellationToken = default);
 }

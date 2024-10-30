@@ -6,11 +6,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HouseCostMonitor.Application.Extensions;
 
+using FluentValidation;
+using FluentValidation.AspNetCore;
+
 public static class ServiceCollectionExtension
 {
     public static void AddApplication(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(ServiceCollectionExtension).Assembly);
+        services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtension).Assembly)
+            .AddFluentValidationAutoValidation();
         
         services.AddScoped<IExpenseService, ExpenseService>();
         services.AddScoped<IInvoiceService, InvoiceService>();

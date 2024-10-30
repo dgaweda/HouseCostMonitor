@@ -22,9 +22,9 @@ public class ExpenseController(IExpenseService expenseService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateExpense([FromBody]AddExpenseDto addExpenseDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateExpense([FromBody]CreateExpenseDto createExpenseDto, CancellationToken cancellationToken)
     {
-        var id = await expenseService.CreateExpense(addExpenseDto, cancellationToken);
+        var id = await expenseService.CreateExpense(createExpenseDto, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id }, null);
     }
 }
