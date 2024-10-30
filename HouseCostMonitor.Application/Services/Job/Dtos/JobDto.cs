@@ -5,6 +5,7 @@ using HouseCostMonitor.Domain.Enums;
 
 public record JobDto
 {
+    public Guid Id { get; set; }
     public string Description { get; init; } = default!;
     public TimeSpan? Duration { get; init; }
     public string CreatedBy { get; set; } = default!;

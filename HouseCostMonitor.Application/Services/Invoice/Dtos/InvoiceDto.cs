@@ -5,6 +5,7 @@ using HouseCostMonitor.Domain.Enums;
 
 public record InvoiceDto
 {
+    public Guid Id { get; set; }
     public decimal TotalCost { get; init; }
     public DateTime IssuedDate { get; init; }
     public DateTime DueDate { get; init; }

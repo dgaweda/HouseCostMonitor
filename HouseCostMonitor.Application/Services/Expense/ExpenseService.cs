@@ -35,4 +35,14 @@ internal class ExpenseService(IExpenseRepository expenseRepository, IMapper mapp
 
         return id;
     }
+
+    public async Task RemoveExpense(Guid id, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Guid> EditExpense(EditExpenseDto editExpenseDto, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
 }

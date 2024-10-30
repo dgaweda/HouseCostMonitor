@@ -5,6 +5,8 @@ namespace HouseCostMonitor.Application.Services.User;
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using HouseCostMonitor.Application.Services.Expense.Dtos;
+using HouseCostMonitor.Application.Services.Job.Dtos;
 using HouseCostMonitor.Domain.Repositories;
 
 internal class UserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository, IMapper mapper) : IUserService
@@ -27,5 +29,30 @@ internal class UserService(IHttpContextAccessor httpContextAccessor, IUserReposi
             throw new Exceptions.ApplicationException("User not found");
 
         return mapper.Map<UserDto>(user);
+    }
+
+    public async Task<Guid> CreateUser(CreateUserDto createUserDto, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Guid> AddUserJobs(Guid userId, IEnumerable<JobDto> jobDtos, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Guid> AddUserExpenses(Guid userId, IEnumerable<ExpenseDto> jobDtos, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Guid> RemoveUserJobs(Guid userId, IEnumerable<Guid> jobsIds, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Guid> RemoveUserExpenses(Guid userId, IEnumerable<Guid> expensesIds, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
     }
 }
