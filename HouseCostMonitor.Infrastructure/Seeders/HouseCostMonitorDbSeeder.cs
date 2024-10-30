@@ -14,13 +14,11 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             var user = GetUserSeedData();
             var expenses = GetExpenseSeedData(user);
             var jobs = GetJobSeedData(expenses, user);
-            var invoices = GetInvoiceSeedData(expenses);
 
             user.Jobs = [jobs[0]];
             user.Expenses = [expenses[0]];
 
             await AddIfNotExistAsync(dbContext.Expenses, expenses);
-            await AddIfNotExistAsync(dbContext.Invoices, invoices);
             await AddIfNotExistAsync(dbContext.Jobs, jobs);
             await AddIfNotExistAsync(dbContext.Users, [user]);
             
@@ -49,7 +47,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             PurchaseDate = new DateTime(2024, 09, 30),
             UserId = user.Id,
             JobId = null,
-            InvoiceId = null
         },
         new Expense
         {
@@ -60,7 +57,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             Supplier = "BricoMarche",
             PurchaseDate = new DateTime(2024, 10, 03),
             JobId = null,
-            InvoiceId = null
         },
         new Expense
         {
@@ -71,7 +67,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             Supplier = "Allegro",
             PurchaseDate = new DateTime(2024, 10, 08),
             JobId = null,
-            InvoiceId = null
         },
         new Expense
         {
@@ -82,7 +77,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             Supplier = "BricoMarche",
             PurchaseDate = new DateTime(2024, 10, 14),
             JobId = null,
-            InvoiceId = null
         },
         new Expense
         {
@@ -93,7 +87,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             Supplier = "PowerFix Electric",
             PurchaseDate = new DateTime(2024, 10, 19),
             JobId = null,
-            InvoiceId = null
         },
         new Expense
         {
@@ -104,43 +97,9 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             Supplier = "MROWKA",
             PurchaseDate = new DateTime(2024, 10, 19),
             JobId = null,
-            InvoiceId = null
         }
     ];
-    private static IEnumerable<Invoice> GetInvoiceSeedData(IReadOnlyList<Expense> expenses)
-    {
-        return new List<Invoice>
-        {
-            new()
-            {
-                IssuedDate = new DateTime(2024, 10, 02),
-                DueDate = new DateTime(2024, 10, 20),
-                InvoiceStatus = InvoiceStatus.Paid,
-                DocumentUrl = "https://example.com/invoice1.pdf",
-                Expenses = [expenses[0]]
-            },
-            new()
-            {
-                IssuedDate = new DateTime(2024, 10, 06),
-                DueDate = new DateTime(2024, 10, 25),
-                InvoiceStatus = InvoiceStatus.Pending,
-                DocumentUrl = "https://example.com/invoice2.pdf",
-                Expenses =
-                [
-                    expenses[1], // Plumbing services expense
-                    expenses[2]
-                ]
-            },
-            new()
-            {
-                IssuedDate = new DateTime(2024, 10, 16),
-                DueDate = new DateTime(2024, 11, 05),
-                InvoiceStatus = InvoiceStatus.Pending,
-                DocumentUrl = "https://example.com/invoice3.pdf",
-                Expenses = [expenses[3]]
-            }
-        };
-    }
+    
     private static List<Job> GetJobSeedData(IReadOnlyList<Expense> expenses, User user)
     {
         return

@@ -16,7 +16,6 @@ public class Expense : BaseEntity
 
     public Guid? UserId { get; set; }
     public Guid? JobId { get; set; }
-    public Guid? InvoiceId { get; set; }
 
     public void CalculateTotalCost()
     {

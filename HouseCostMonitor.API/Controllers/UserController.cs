@@ -32,11 +32,4 @@ public class UserController(IUserService userService) : ControllerBase
         var id = await userService.CreateUser(createUserDto, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id }, null);
     }
-    
-    [HttpPost("jobs")]
-    public async Task<IActionResult> CreateUser(IEnumerable<JobDto> jobDtos, CancellationToken cancellationToken)
-    {
-        var id = await userService.CreateUser(createUserDto, cancellationToken);
-        return CreatedAtAction(nameof(Get), new { id }, null);
-    }
 }
