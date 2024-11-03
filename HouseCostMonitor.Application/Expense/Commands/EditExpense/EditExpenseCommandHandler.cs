@@ -22,12 +22,13 @@ public class EditExpenseCommandHandler(IMapper mapper, IExpenseRepository expens
 {
     public async Task<bool> Handle(EditExpenseCommand request, CancellationToken cancellationToken)
     {
-        var expense = mapper.Map<Expense>(request);
         var expenseToUpdate = await expenseRepository.GetByIdAsync(request.Id, cancellationToken);
         if (expenseToUpdate is null)
             return false;
         
-        await expenseRepository.UpdateAsync(expense, cancellationToken);
+        mapper.Map(request, expenseToUpdate);
+
+        await expenseRepository.UpdateAsync(expenseToUpdate, cancellationToken);
 
         return true;
     }
