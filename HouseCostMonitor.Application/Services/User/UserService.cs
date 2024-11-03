@@ -6,7 +6,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HouseCostMonitor.Application.Exceptions;
 using HouseCostMonitor.Application.Services.Expense.Queries.GetExpenses;
-using HouseCostMonitor.Application.Services.Job.Queries;
+using HouseCostMonitor.Application.Services.Job.Dtos;
 using HouseCostMonitor.Application.Services.User.Commands.CreateUser;
 using HouseCostMonitor.Application.Services.User.Queries;
 using HouseCostMonitor.Domain.Entities;
@@ -47,7 +47,7 @@ internal class UserService(IHttpContextAccessor httpContextAccessor, IUserReposi
         return id;
     }
 
-    public async Task<Guid> AddUserJobs(Guid userId, IEnumerable<GetJobsQuery> jobDtos, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddUserJobs(Guid userId, IEnumerable<JobDto> jobDtos, CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
         if (user is null)

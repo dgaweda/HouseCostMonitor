@@ -17,7 +17,6 @@ public static class ServiceCollectionExtension
             .AddFluentValidationAutoValidation();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceCollectionExtension).Assembly));
         
-        services.AddScoped<IJobService, JobService>();
         services.AddScoped<IUserService, UserService>();
     }
 }

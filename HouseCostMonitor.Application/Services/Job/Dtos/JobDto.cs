@@ -1,9 +1,9 @@
-namespace HouseCostMonitor.Application.Services.Job.Queries;
+namespace HouseCostMonitor.Application.Services.Job.Dtos;
 
 using HouseCostMonitor.Application.Services.Expense.Queries.GetExpenses;
 using HouseCostMonitor.Domain.Enums;
 
-public record GetJobsQuery
+public record JobDto
 {
     public Guid Id { get; set; }
     public string Description { get; init; } = default!;
