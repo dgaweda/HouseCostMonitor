@@ -47,11 +47,13 @@ internal class BaseRepository<T>(HouseCostMonitorDbContext dbContext) : IBaseRep
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Guid?> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        await _entity.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken: cancellationToken);
+        var deletedRows = await _entity.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken: cancellationToken);
+        if (deletedRows > 0)
+            return id;
 
-        return id;
+        return null;
     }
 
     public async Task<Guid> UpdateAsync(T entity, CancellationToken cancellationToken = default)

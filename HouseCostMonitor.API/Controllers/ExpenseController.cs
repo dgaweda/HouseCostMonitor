@@ -3,42 +3,58 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HouseCostMonitor.API.Controllers;
 
-using HouseCostMonitor.Application.Services.Expense.Dtos;
+using HouseCostMonitor.Application.Services.Expense.Commands.CreateExpense;
+using HouseCostMonitor.Application.Services.Expense.Commands.EditExpense;
+using HouseCostMonitor.Application.Services.Expense.Commands.RemoveExpense;
+using HouseCostMonitor.Application.Services.Expense.Queries.GetExpenseById;
+using HouseCostMonitor.Application.Services.Expense.Queries.GetExpenses;
+using MediatR;
 
 [ApiController]
 [Route("api/expense")]
-public class ExpenseController(IExpenseService expenseService) : ControllerBase
+public class ExpenseController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
-        return Ok(await expenseService.GetAllExpenses(cancellationToken));
+        return Ok(await mediator.Send(new GetExpensesQuery(), cancellationToken));
     }
     
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
-        return Ok(await expenseService.GetExpenseById(id, cancellationToken));
+        var expense = await mediator.Send(new GetExpenseByIdQuery(id), cancellationToken);
+        if (expense is null)
+            return NotFound();
+        
+        return Ok(expense);
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateExpense([FromBody]CreateExpenseCommand createExpenseCommand, CancellationToken cancellationToken)
     {
-        var id = await expenseService.CreateExpense(createExpenseCommand, cancellationToken);
+        var id = await mediator.Send(createExpenseCommand, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id }, null);
     }
     
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> RemoveExpense(Guid id, CancellationToken cancellationToken)
     {
-        await expenseService.RemoveExpense(id, cancellationToken);
-        return Ok(id);
+        var isDeleted = await mediator.Send(new RemoveExpenseCommand(id), cancellationToken);
+        if (isDeleted)
+            return NoContent();
+        
+        return NotFound();
     }
     
-    [HttpPut("{id:guid}")]
-    public async Task<IActionResult> EditExpense(Guid expenseId, EditExpenseCommand editExpenseCommand, CancellationToken cancellationToken)
+    [HttpPatch("{id:guid}")]
+    public async Task<IActionResult> EditExpense(Guid id, EditExpenseCommand editExpenseCommand, CancellationToken cancellationToken)
     {
-        var id = await expenseService.EditExpense(expenseId, editExpenseCommand, cancellationToken);
-        return Ok(id);
+        editExpenseCommand.Id = id;
+        var isUpdated = await mediator.Send(editExpenseCommand, cancellationToken);
+        if (isUpdated)
+            return NoContent();
+        
+        return NotFound();
     }
 }

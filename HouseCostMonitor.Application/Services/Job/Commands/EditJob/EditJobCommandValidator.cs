@@ -1,7 +1,6 @@
-namespace HouseCostMonitor.Application.Services.Job.Validators;
+namespace HouseCostMonitor.Application.Services.Job.Commands.EditJob;
 
 using FluentValidation;
-using HouseCostMonitor.Application.Services.Job.Dtos;
 
 public class EditJobCommandValidator : AbstractValidator<EditJobCommand>
 {

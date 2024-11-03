@@ -15,8 +15,8 @@ public static class ServiceCollectionExtension
         services.AddAutoMapper(typeof(ServiceCollectionExtension).Assembly);
         services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtension).Assembly)
             .AddFluentValidationAutoValidation();
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceCollectionExtension).Assembly));
         
-        services.AddScoped<IExpenseService, ExpenseService>();
         services.AddScoped<IJobService, JobService>();
         services.AddScoped<IUserService, UserService>();
     }

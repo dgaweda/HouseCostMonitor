@@ -1,7 +1,7 @@
-namespace HouseCostMonitor.Application.Services.User.Dtos;
+namespace HouseCostMonitor.Application.Services.User.Queries;
 
-using HouseCostMonitor.Application.Services.Expense.Dtos;
-using HouseCostMonitor.Application.Services.Job.Dtos;
+using HouseCostMonitor.Application.Services.Expense.Queries.GetExpenses;
+using HouseCostMonitor.Application.Services.Job.Queries;
 using HouseCostMonitor.Domain.Enums;
 
 public record GetUsersQuery
@@ -13,5 +13,5 @@ public record GetUsersQuery
     public string Lastname { get; set; } = default!;
     public DateTime? LastLoginDate { get; set; }
     public List<GetJobsQuery> Jobs { get; set; } = [];
-    public List<GetExpenseQuery> Expenses { get; set; } = [];
+    public List<GetExpensesQuery> Expenses { get; set; } = [];
 }

@@ -1,4 +1,4 @@
-namespace HouseCostMonitor.Application.Services.Job.Dtos;
+namespace HouseCostMonitor.Application.Services.Job.Commands.CreateJob;
 
 using HouseCostMonitor.Domain.Enums;
 

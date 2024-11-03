@@ -1,4 +1,3 @@
-using HouseCostMonitor.Application.Services.User.Dtos;
 using Microsoft.AspNetCore.Http;
 
 namespace HouseCostMonitor.Application.Services.User;
@@ -6,8 +5,10 @@ namespace HouseCostMonitor.Application.Services.User;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using HouseCostMonitor.Application.Exceptions;
-using HouseCostMonitor.Application.Services.Expense.Dtos;
-using HouseCostMonitor.Application.Services.Job.Dtos;
+using HouseCostMonitor.Application.Services.Expense.Queries.GetExpenses;
+using HouseCostMonitor.Application.Services.Job.Queries;
+using HouseCostMonitor.Application.Services.User.Commands.CreateUser;
+using HouseCostMonitor.Application.Services.User.Queries;
 using HouseCostMonitor.Domain.Entities;
 using HouseCostMonitor.Domain.Repositories;
 
@@ -59,7 +60,7 @@ internal class UserService(IHttpContextAccessor httpContextAccessor, IUserReposi
         return id;
     }
 
-    public async Task<Guid> AddUserExpenses(Guid userId, IEnumerable<GetExpenseQuery> expenseDtos, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddUserExpenses(Guid userId, IEnumerable<GetExpensesQuery> expenseDtos, CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
         if (user is null)

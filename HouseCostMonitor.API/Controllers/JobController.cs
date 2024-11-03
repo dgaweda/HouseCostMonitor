@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HouseCostMonitor.API.Controllers;
 
-using HouseCostMonitor.Application.Services.Job.Dtos;
+using HouseCostMonitor.Application.Services.Job.Commands.CreateJob;
 using HouseCostMonitor.Domain.Repositories;
 
 [ApiController]

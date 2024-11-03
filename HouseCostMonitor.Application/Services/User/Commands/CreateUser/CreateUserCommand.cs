@@ -1,4 +1,4 @@
-namespace HouseCostMonitor.Application.Services.User.Dtos;
+namespace HouseCostMonitor.Application.Services.User.Commands.CreateUser;
 
 using HouseCostMonitor.Domain.Enums;
 

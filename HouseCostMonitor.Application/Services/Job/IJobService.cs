@@ -1,8 +1,9 @@
-using HouseCostMonitor.Application.Services.Job.Dtos;
-
 namespace HouseCostMonitor.Application.Services.Job;
 
-using HouseCostMonitor.Application.Services.Expense.Dtos;
+using HouseCostMonitor.Application.Services.Expense.Commands.CreateExpense;
+using HouseCostMonitor.Application.Services.Job.Commands.CreateJob;
+using HouseCostMonitor.Application.Services.Job.Commands.EditJob;
+using HouseCostMonitor.Application.Services.Job.Queries;
 using HouseCostMonitor.Domain.Enums;
 
 public interface IJobService

@@ -10,6 +10,6 @@ public interface IBaseRepository<T> where T : BaseEntity
     Task<T?> GetAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default);
     Task<Guid> AddAsync(T entity, CancellationToken cancellationToken = default);
     Task AddManyAsync(List<T> entities, CancellationToken cancellationToken = default);
-    Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
+    Task<Guid?> DeleteAsync(Guid id, CancellationToken cancellationToken = default);
     Task<Guid> UpdateAsync(T entity, CancellationToken cancellationToken = default);
 }

@@ -1,7 +1,6 @@
-namespace HouseCostMonitor.Application.Services.Expense.Validators;
+namespace HouseCostMonitor.Application.Services.Expense.Commands.EditExpense;
 
 using FluentValidation;
-using HouseCostMonitor.Application.Services.Expense.Dtos;
 
 public class EditExpenseCommandValidator : AbstractValidator<EditExpenseCommand>
 {

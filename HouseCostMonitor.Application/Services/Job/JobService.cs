@@ -1,10 +1,11 @@
-using HouseCostMonitor.Application.Services.Job.Dtos;
-
 namespace HouseCostMonitor.Application.Services.Job;
 
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using HouseCostMonitor.Application.Services.Expense.Dtos;
+using HouseCostMonitor.Application.Services.Expense.Commands.CreateExpense;
+using HouseCostMonitor.Application.Services.Job.Commands.CreateJob;
+using HouseCostMonitor.Application.Services.Job.Commands.EditJob;
+using HouseCostMonitor.Application.Services.Job.Queries;
 using HouseCostMonitor.Domain.Entities;
 using HouseCostMonitor.Domain.Enums;
 using HouseCostMonitor.Domain.Repositories;

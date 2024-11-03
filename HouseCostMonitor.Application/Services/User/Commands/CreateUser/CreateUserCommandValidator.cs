@@ -1,7 +1,6 @@
-namespace HouseCostMonitor.Application.Services.User.Validators;
+namespace HouseCostMonitor.Application.Services.User.Commands.CreateUser;
 
 using FluentValidation;
-using HouseCostMonitor.Application.Services.User.Dtos;
 
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
