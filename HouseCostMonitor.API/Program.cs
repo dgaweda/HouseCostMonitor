@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using HouseCostMonitor.API;
 using HouseCostMonitor.Infrastructure.Seeders;
 using Serilog;
@@ -6,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+
 builder.Services.RegisterDI(builder.Configuration);
 builder.Host.UseSerilog((context, cfg) => cfg.ReadFrom.Configuration(context.Configuration));
 

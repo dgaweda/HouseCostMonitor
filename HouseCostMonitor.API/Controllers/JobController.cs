@@ -5,6 +5,7 @@ namespace HouseCostMonitor.API.Controllers;
 using HouseCostMonitor.Application.Job.Commands.CreateJob;
 using HouseCostMonitor.Application.Job.Commands.EditJob;
 using HouseCostMonitor.Application.Job.Commands.EditJobStatus;
+using HouseCostMonitor.Application.Job.Dtos;
 using HouseCostMonitor.Application.Job.Queries.GetJobById;
 using HouseCostMonitor.Application.Job.Queries.GetJobs;
 using HouseCostMonitor.Domain.Enums;
@@ -15,13 +16,15 @@ using MediatR;
 public class JobController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<JobDto>>> GetAll(CancellationToken cancellationToken)
     {
         return Ok(await mediator.Send(new GetJobsQuery(), cancellationToken));
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> Get(Guid id, CancellationToken cancellationToken)
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<JobDto?>> Get(Guid id, CancellationToken cancellationToken)
     {
         var job = await mediator.Send(new GetJobById(id), cancellationToken);
         if (job is null)
@@ -31,6 +34,7 @@ public class JobController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> CreateJob(CreateJobCommand createJobCommand, CancellationToken cancellationToken)
     {
         var id = await mediator.Send(createJobCommand, cancellationToken);
@@ -38,6 +42,8 @@ public class JobController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> EditJobInformation(Guid id, EditJobCommand editJobCommand, CancellationToken cancellationToken)
     {
         editJobCommand.Id = id;
@@ -49,6 +55,8 @@ public class JobController(IMediator mediator) : ControllerBase
     }
     
     [HttpPatch("status/{id:guid}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> EditJobInformation(Guid id, JobStatus jobStatus, CancellationToken cancellationToken)
     {
         var editJobStatusCommand = new EditJobStatusCommand(id, jobStatus);

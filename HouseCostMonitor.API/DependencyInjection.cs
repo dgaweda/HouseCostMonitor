@@ -23,7 +23,6 @@ public static class DependencyInjection
         app.UseSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "HouseCostMonitor API V1");
-            options.RoutePrefix = "api";
         });
     }
 }
