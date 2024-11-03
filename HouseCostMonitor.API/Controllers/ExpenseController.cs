@@ -1,13 +1,12 @@
-using HouseCostMonitor.Application.Services.Expense;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HouseCostMonitor.API.Controllers;
 
-using HouseCostMonitor.Application.Services.Expense.Commands.CreateExpense;
-using HouseCostMonitor.Application.Services.Expense.Commands.EditExpense;
-using HouseCostMonitor.Application.Services.Expense.Commands.RemoveExpense;
-using HouseCostMonitor.Application.Services.Expense.Queries.GetExpenseById;
-using HouseCostMonitor.Application.Services.Expense.Queries.GetExpenses;
+using HouseCostMonitor.Application.Expense.Commands.CreateExpense;
+using HouseCostMonitor.Application.Expense.Commands.EditExpense;
+using HouseCostMonitor.Application.Expense.Commands.RemoveExpense;
+using HouseCostMonitor.Application.Expense.Queries.GetExpenseById;
+using HouseCostMonitor.Application.Expense.Queries.GetExpenses;
 using MediatR;
 
 [ApiController]

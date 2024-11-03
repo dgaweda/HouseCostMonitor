@@ -1,12 +1,10 @@
-using HouseCostMonitor.Application.Services.Expense;
-using HouseCostMonitor.Application.Services.Job;
-using HouseCostMonitor.Application.Services.User;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HouseCostMonitor.Application.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using HouseCostMonitor.Application.User;
 
 public static class ServiceCollectionExtension
 {

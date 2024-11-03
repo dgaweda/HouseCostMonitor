@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HouseCostMonitor.API.Controllers;
 
-using HouseCostMonitor.Application.Services.Job.Commands.CreateJob;
-using HouseCostMonitor.Application.Services.Job.Commands.EditJob;
-using HouseCostMonitor.Application.Services.Job.Commands.EditJobStatus;
-using HouseCostMonitor.Application.Services.Job.Queries.GetJobById;
-using HouseCostMonitor.Application.Services.Job.Queries.GetJobs;
+using HouseCostMonitor.Application.Job.Commands.CreateJob;
+using HouseCostMonitor.Application.Job.Commands.EditJob;
+using HouseCostMonitor.Application.Job.Commands.EditJobStatus;
+using HouseCostMonitor.Application.Job.Queries.GetJobById;
+using HouseCostMonitor.Application.Job.Queries.GetJobs;
 using HouseCostMonitor.Domain.Enums;
 using MediatR;
 
