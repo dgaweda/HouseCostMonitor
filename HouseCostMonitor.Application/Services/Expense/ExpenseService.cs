@@ -10,26 +10,26 @@ using HouseCostMonitor.Domain.Entities;
 
 internal class ExpenseService(IExpenseRepository expenseRepository, IMapper mapper) : IExpenseService
 {
-    public async Task<IEnumerable<ExpenseDto>> GetAllExpenses(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<GetExpenseQuery>> GetAllExpenses(CancellationToken cancellationToken = default)
     {
         return (await expenseRepository.GetAllAsync(cancellationToken: cancellationToken))
             .AsQueryable()
-            .ProjectTo<ExpenseDto>(mapper.ConfigurationProvider)
+            .ProjectTo<GetExpenseQuery>(mapper.ConfigurationProvider)
             .ToList();
     }
 
-    public async Task<ExpenseDto?> GetExpenseById(Guid id, CancellationToken cancellationToken = default)
+    public async Task<GetExpenseQuery?> GetExpenseById(Guid id, CancellationToken cancellationToken = default)
     {
         var expense = await expenseRepository.GetByIdAsync(id, cancellationToken);
         if (expense is null)
             throw new ApplicationException("Expense not found");
 
-        return mapper.Map<ExpenseDto>(expense);
+        return mapper.Map<GetExpenseQuery>(expense);
     }
 
-    public async Task<Guid> CreateExpense(CreateExpenseDto createExpenseDto, CancellationToken cancellationToken)
+    public async Task<Guid> CreateExpense(CreateExpenseCommand createExpenseCommand, CancellationToken cancellationToken)
     {
-        var expense = mapper.Map<Expense>(createExpenseDto);
+        var expense = mapper.Map<Expense>(createExpenseCommand);
         var id = await expenseRepository.AddAsync(expense, cancellationToken);
 
         return id;
@@ -40,10 +40,10 @@ internal class ExpenseService(IExpenseRepository expenseRepository, IMapper mapp
         await expenseRepository.DeleteAsync(id, cancellationToken);
     }
 
-    public async Task<Guid> EditExpense(Guid expenseId, EditExpenseDto editExpenseDto, CancellationToken cancellationToken = default)
+    public async Task<Guid> EditExpense(Guid expenseId, EditExpenseCommand editExpenseCommand, CancellationToken cancellationToken = default)
     {
-        editExpenseDto.Id = expenseId;
-        var expense = mapper.Map<Expense>(editExpenseDto);
+        editExpenseCommand.Id = expenseId;
+        var expense = mapper.Map<Expense>(editExpenseCommand);
         var id = await expenseRepository.UpdateAsync(expense, cancellationToken);
 
         return id;

@@ -4,9 +4,9 @@ using HouseCostMonitor.Application.Services.Expense.Dtos;
 
 public interface IExpenseService
 {
-    Task<IEnumerable<ExpenseDto>> GetAllExpenses(CancellationToken cancellationToken = default);
-    Task<ExpenseDto?> GetExpenseById(Guid id, CancellationToken cancellationToken = default);
-    Task<Guid> CreateExpense(CreateExpenseDto createExpenseDto, CancellationToken cancellationToken = default);
+    Task<IEnumerable<GetExpenseQuery>> GetAllExpenses(CancellationToken cancellationToken = default);
+    Task<GetExpenseQuery?> GetExpenseById(Guid id, CancellationToken cancellationToken = default);
+    Task<Guid> CreateExpense(CreateExpenseCommand createExpenseCommand, CancellationToken cancellationToken = default);
     Task RemoveExpense(Guid id, CancellationToken cancellationToken = default);
-    Task<Guid> EditExpense(Guid expenseId, EditExpenseDto editExpenseDto, CancellationToken cancellationToken = default);
+    Task<Guid> EditExpense(Guid expenseId, EditExpenseCommand editExpenseCommand, CancellationToken cancellationToken = default);
 }

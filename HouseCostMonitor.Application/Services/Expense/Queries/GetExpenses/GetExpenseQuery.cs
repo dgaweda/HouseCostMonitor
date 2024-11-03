@@ -2,7 +2,7 @@ using HouseCostMonitor.Domain.Enums;
 
 namespace HouseCostMonitor.Application.Services.Expense.Dtos;
 
-public record ExpenseDto
+public record GetExpenseQuery
 {
     public Guid Id { get; set; }
     public ExpenseType Type { get; init; }

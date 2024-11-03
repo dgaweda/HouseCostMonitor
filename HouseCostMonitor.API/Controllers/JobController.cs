@@ -27,9 +27,9 @@ public class JobController(IJobService jobService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateJob(CreateJobDto createJobDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateJob(CreateJobCommand createJobCommand, CancellationToken cancellationToken)
     {
-        var id = await jobService.CreateJob(createJobDto, cancellationToken);
+        var id = await jobService.CreateJob(createJobCommand, cancellationToken);
         return CreatedAtAction(nameof(Get), new { id }, null);
     }
 }

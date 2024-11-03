@@ -22,9 +22,9 @@ public class ExpenseController(IExpenseService expenseService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateExpense([FromBody]CreateExpenseDto createExpenseDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateExpense([FromBody]CreateExpenseCommand createExpenseCommand, CancellationToken cancellationToken)
     {
-        var id = await expenseService.CreateExpense(createExpenseDto, cancellationToken);
+        var id = await expenseService.CreateExpense(createExpenseCommand, cancellationToken);
         return CreatedAtAction(nameof(GetById), new { id }, null);
     }
     
@@ -36,9 +36,9 @@ public class ExpenseController(IExpenseService expenseService) : ControllerBase
     }
     
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> EditExpense(Guid expenseId, EditExpenseDto editExpenseDto, CancellationToken cancellationToken)
+    public async Task<IActionResult> EditExpense(Guid expenseId, EditExpenseCommand editExpenseCommand, CancellationToken cancellationToken)
     {
-        var id = await expenseService.EditExpense(expenseId, editExpenseDto, cancellationToken);
+        var id = await expenseService.EditExpense(expenseId, editExpenseCommand, cancellationToken);
         return Ok(id);
     }
 }

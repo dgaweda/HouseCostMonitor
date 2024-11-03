@@ -13,20 +13,20 @@ using HouseCostMonitor.Domain.Repositories;
 
 internal class UserService(IHttpContextAccessor httpContextAccessor, IUserRepository userRepository, IMapper mapper) : IUserService
 {
-    public async Task<IEnumerable<UserDto>> GetAllUsers(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<GetUsersQuery>> GetAllUsers(CancellationToken cancellationToken = default)
     {
         return (await userRepository.GetAllAsync(cancellationToken: cancellationToken))
             .AsQueryable()
-            .ProjectTo<UserDto>(mapper.ConfigurationProvider);
+            .ProjectTo<GetUsersQuery>(mapper.ConfigurationProvider);
     }
 
-    public async Task<UserDto?> GetUser(Guid id, CancellationToken cancellationToken = default)
+    public async Task<GetUsersQuery?> GetUser(Guid id, CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetByIdAsync(id, cancellationToken);
-        return user is null ? null : mapper.Map<UserDto>(user);
+        return user is null ? null : mapper.Map<GetUsersQuery>(user);
     }
 
-    public async Task<UserDto> GetCurrentUser(CancellationToken cancellationToken = default)
+    public async Task<GetUsersQuery> GetCurrentUser(CancellationToken cancellationToken = default)
     {
         var username = httpContextAccessor.HttpContext.User.Identity?.Name;
         if (string.IsNullOrWhiteSpace(username))
@@ -36,17 +36,17 @@ internal class UserService(IHttpContextAccessor httpContextAccessor, IUserReposi
         if (user is null)
             throw new Exceptions.ApplicationException("User not found");
 
-        return mapper.Map<UserDto>(user);
+        return mapper.Map<GetUsersQuery>(user);
     }
 
-    public async Task<Guid> CreateUser(CreateUserDto createUserDto, CancellationToken cancellationToken = default)
+    public async Task<Guid> CreateUser(CreateUserCommand createUserCommand, CancellationToken cancellationToken = default)
     {
-        var user = mapper.Map<User>(createUserDto);
+        var user = mapper.Map<User>(createUserCommand);
         var id = await userRepository.AddAsync(user, cancellationToken);
         return id;
     }
 
-    public async Task<Guid> AddUserJobs(Guid userId, IEnumerable<JobDto> jobDtos, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddUserJobs(Guid userId, IEnumerable<GetJobsQuery> jobDtos, CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
         if (user is null)
@@ -59,7 +59,7 @@ internal class UserService(IHttpContextAccessor httpContextAccessor, IUserReposi
         return id;
     }
 
-    public async Task<Guid> AddUserExpenses(Guid userId, IEnumerable<ExpenseDto> expenseDtos, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddUserExpenses(Guid userId, IEnumerable<GetExpenseQuery> expenseDtos, CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetByIdAsync(userId, cancellationToken);
         if (user is null)

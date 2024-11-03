@@ -7,10 +7,10 @@ using HouseCostMonitor.Domain.Enums;
 
 public interface IJobService
 {
-    Task<IEnumerable<JobDto>> GetAllJobs(CancellationToken cancellationToken = default);
-    Task<JobDto?> GetJob(Guid id, CancellationToken cancellationToken = default);
-    Task<Guid> CreateJob(CreateJobDto createJobDto, CancellationToken cancellationToken = default);
-    Task<Guid> EditJobInformation(Guid id, EditJobDto editJobDto, CancellationToken cancellationToken = default);
+    Task<IEnumerable<GetJobsQuery>> GetAllJobs(CancellationToken cancellationToken = default);
+    Task<GetJobsQuery?> GetJob(Guid id, CancellationToken cancellationToken = default);
+    Task<Guid> CreateJob(CreateJobCommand createJobCommand, CancellationToken cancellationToken = default);
+    Task<Guid> EditJobInformation(Guid id, EditJobCommand editJobCommand, CancellationToken cancellationToken = default);
     Task<Guid> EditJobStatus(Guid jobId, JobStatus jobStatus, CancellationToken cancellationToken = default);
-    Task<Guid> AddJobExpense(Guid id, CreateExpenseDto createExpenseDto, CancellationToken cancellationToken = default);
+    Task<Guid> AddJobExpense(Guid id, CreateExpenseCommand createExpenseCommand, CancellationToken cancellationToken = default);
 }

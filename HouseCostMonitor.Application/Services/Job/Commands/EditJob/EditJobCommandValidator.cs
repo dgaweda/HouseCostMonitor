@@ -3,9 +3,9 @@ namespace HouseCostMonitor.Application.Services.Job.Validators;
 using FluentValidation;
 using HouseCostMonitor.Application.Services.Job.Dtos;
 
-public class EditJobDtoValidator : AbstractValidator<EditJobDto>
+public class EditJobCommandValidator : AbstractValidator<EditJobCommand>
 {
-    public EditJobDtoValidator()
+    public EditJobCommandValidator()
     {
         RuleFor(dto => dto.Description)
             .NotEmpty()

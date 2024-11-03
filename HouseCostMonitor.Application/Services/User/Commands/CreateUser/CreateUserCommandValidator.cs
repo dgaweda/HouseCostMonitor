@@ -3,9 +3,9 @@ namespace HouseCostMonitor.Application.Services.User.Validators;
 using FluentValidation;
 using HouseCostMonitor.Application.Services.User.Dtos;
 
-public class CreateUserDtoValidator : AbstractValidator<CreateUserDto>
+public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
-    public CreateUserDtoValidator()
+    public CreateUserCommandValidator()
     {
         RuleFor(dto => dto.Username)
             .NotEmpty()

@@ -9,9 +9,9 @@ public class ExpenseProfile : Profile
 {
     public ExpenseProfile()
     {
-        CreateMap<CreateExpenseDto, Expense>();
+        CreateMap<CreateExpenseCommand, Expense>();
         
-        CreateMap<Expense, ExpenseDto>()
+        CreateMap<Expense, GetExpenseQuery>()
             .ForMember(dest => dest.TotalCost, opt => opt.MapFrom<TotalCostResolver>());
     }
 }

@@ -2,7 +2,7 @@ namespace HouseCostMonitor.Application.Services.Expense.Dtos;
 
 using HouseCostMonitor.Domain.Enums;
 
-public record EditExpenseDto
+public record EditExpenseCommand
 {
     public Guid Id { get; set; }
     public ExpenseType Type { get; init; }

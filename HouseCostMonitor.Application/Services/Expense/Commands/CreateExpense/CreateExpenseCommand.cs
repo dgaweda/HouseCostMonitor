@@ -2,7 +2,7 @@ namespace HouseCostMonitor.Application.Services.Expense.Dtos;
 
 using HouseCostMonitor.Domain.Enums;
 
-public record CreateExpenseDto
+public record CreateExpenseCommand
 {
     public ExpenseType Type { get; set; }
     public string? Description { get; set; }

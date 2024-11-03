@@ -11,32 +11,32 @@ using HouseCostMonitor.Domain.Repositories;
 
 internal class JobService(IJobRepository jobRepository, IMapper mapper) : IJobService
 {
-    public async Task<IEnumerable<JobDto>> GetAllJobs(CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<GetJobsQuery>> GetAllJobs(CancellationToken cancellationToken = default)
     {
         return (await jobRepository.GetAllAsync(cancellationToken: cancellationToken))
             .AsQueryable()
-            .ProjectTo<JobDto>(mapper.ConfigurationProvider)
+            .ProjectTo<GetJobsQuery>(mapper.ConfigurationProvider)
             .ToList();
     }
 
-    public async Task<JobDto?> GetJob(Guid id, CancellationToken cancellationToken = default)
+    public async Task<GetJobsQuery?> GetJob(Guid id, CancellationToken cancellationToken = default)
     {
         var job = await jobRepository.GetByIdAsync(id, cancellationToken);
-        return job is null ? null : mapper.Map<JobDto>(job);
+        return job is null ? null : mapper.Map<GetJobsQuery>(job);
     }
 
-    public async Task<Guid> CreateJob(CreateJobDto createJobDto, CancellationToken cancellationToken = default)
+    public async Task<Guid> CreateJob(CreateJobCommand createJobCommand, CancellationToken cancellationToken = default)
     {
-        var job = mapper.Map<Job>(createJobDto);
+        var job = mapper.Map<Job>(createJobCommand);
         var id = await jobRepository.AddAsync(job, cancellationToken);
         return id;
     }
 
-    public async Task<Guid> EditJobInformation(Guid jobId, EditJobDto editJobDto, CancellationToken cancellationToken = default)
+    public async Task<Guid> EditJobInformation(Guid jobId, EditJobCommand editJobCommand, CancellationToken cancellationToken = default)
     {
-        editJobDto.Id = jobId;
+        editJobCommand.Id = jobId;
         
-        var job = mapper.Map<Job>(editJobDto);
+        var job = mapper.Map<Job>(editJobCommand);
         var id = await jobRepository.UpdateAsync(job, cancellationToken);
         return id;
     }
@@ -53,13 +53,13 @@ internal class JobService(IJobRepository jobRepository, IMapper mapper) : IJobSe
         return id;
     }
 
-    public async Task<Guid> AddJobExpense(Guid jobId, CreateExpenseDto createExpenseDto, CancellationToken cancellationToken = default)
+    public async Task<Guid> AddJobExpense(Guid jobId, CreateExpenseCommand createExpenseCommand, CancellationToken cancellationToken = default)
     {
         var job = await jobRepository.GetByIdAsync(jobId, cancellationToken);
         if(job is null)
             throw new ApplicationException($"Job with id - {jobId} - Not Found");
         
-        var expense = mapper.Map<Expense>(createExpenseDto);
+        var expense = mapper.Map<Expense>(createExpenseCommand);
         job.AddJobExpense(expense);
 
         var id = await jobRepository.UpdateAsync(job, cancellationToken);
