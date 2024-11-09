@@ -12,7 +12,8 @@ public class GetJobsQueryHandler(IMapper mapper, IJobRepository jobRepository) :
 {
     public async Task<IEnumerable<JobDto>> Handle(GetJobsQuery request, CancellationToken cancellationToken)
     {
-        return (await jobRepository.GetAllAsync(cancellationToken: cancellationToken))
+        var jobs = await jobRepository.GetAllAsync(cancellationToken: cancellationToken);
+        return jobs
             .AsQueryable()
             .ProjectTo<JobDto>(mapper.ConfigurationProvider)
             .ToList();

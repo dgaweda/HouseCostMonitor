@@ -1,17 +1,14 @@
 namespace HouseCostMonitor.API.Middlewares;
 
-public class TimeLoggingMiddleware : IMiddleware
+public class TimeLoggingMiddleware(ILogger<TimeLoggingMiddleware> logger) : IMiddleware
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        try
-        {
-            await next.Invoke(context);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        await next.Invoke(context);
+    }
+
+    private void LogHttpRequestRunningLongerThan4Secs(HttpContext context)
+    {
+        logger.LogWarning($"{context.Request}");
     }
 }

@@ -15,19 +15,19 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
         {
             logger.LogWarning(ex, ex.Message);
             context.Response.StatusCode = StatusCodes.Status404NotFound;
-            await context.Response.WriteAsync(ex.Message);
+            await context.Response.WriteAsJsonAsync(ex.Message);
         }
         catch (RepositoryException ex)
         {
             logger.LogError(ex, ex.Message);
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
-            await context.Response.WriteAsync(ex.Message);
+            await context.Response.WriteAsJsonAsync(ex.Message);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, ex.Message);
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            await context.Response.WriteAsync("Unhandled exception occured");
+            await context.Response.WriteAsJsonAsync("Unhandled exception occured");
         }
     }
 }

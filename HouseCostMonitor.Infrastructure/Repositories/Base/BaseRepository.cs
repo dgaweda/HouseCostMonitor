@@ -13,7 +13,7 @@ internal class BaseRepository<T>(HouseCostMonitorDbContext dbContext) : IBaseRep
 {
     private readonly DbSet<T> _entity = dbContext.Set<T>();
     
-    public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default)
+    public virtual async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null, CancellationToken cancellationToken = default)
     {
         if(filter == null)
             return await _entity.ToListAsync(cancellationToken: cancellationToken);
@@ -21,7 +21,7 @@ internal class BaseRepository<T>(HouseCostMonitorDbContext dbContext) : IBaseRep
         return await _entity.Where(filter).ToListAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public virtual async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var entity = await _entity.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
         if (entity is null)
@@ -30,7 +30,7 @@ internal class BaseRepository<T>(HouseCostMonitorDbContext dbContext) : IBaseRep
         return entity;
     }
     
-    public async Task<T> GetAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
+    public virtual async Task<T> GetAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
     {
         var entity = await _entity.FirstOrDefaultAsync(filter, cancellationToken: cancellationToken);
         if (entity is null)

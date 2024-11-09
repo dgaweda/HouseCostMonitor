@@ -23,9 +23,10 @@ var seeder = scope.ServiceProvider.GetRequiredService<IHouseCostMonitorDbSeeder>
 await seeder.Seed();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<TimeLoggingMiddleware>();
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseSerilogRequestLogging();
-app.UseSwagger();
+app.AddSwagger();
 
 app.UseHttpsRedirection();
 

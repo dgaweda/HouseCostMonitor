@@ -18,7 +18,8 @@ public class JobController(IMediator mediator) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<JobDto>>> GetAll(CancellationToken cancellationToken)
     {
-        return Ok(await mediator.Send(new GetJobsQuery(), cancellationToken));
+        var jobs = await mediator.Send(new GetJobsQuery(), cancellationToken);
+        return Ok(jobs);
     }
     
     [HttpGet("{id:guid}")]

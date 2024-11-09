@@ -9,6 +9,7 @@ public static class DependencyInjection
 {
     public static void RegisterDependencyInjection(this IServiceCollection services, IConfiguration config)
     {
+        services.AddScoped<TimeLoggingMiddleware>();
         services.AddScoped<ErrorHandlingMiddleware>();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -18,7 +19,7 @@ public static class DependencyInjection
         services.AddApplication();
     }
 
-    public static void UseSwagger(this WebApplication app)
+    public static void AddSwagger(this WebApplication app)
     {
         if (!app.Environment.IsDevelopment()) return;
         
