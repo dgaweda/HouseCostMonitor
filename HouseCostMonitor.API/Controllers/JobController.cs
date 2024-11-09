@@ -47,11 +47,9 @@ public class JobController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> EditJobInformation(Guid id, EditJobCommand editJobCommand, CancellationToken cancellationToken)
     {
         editJobCommand.Id = id;
-        var idUpdated = await mediator.Send(editJobCommand, cancellationToken);
-        if (idUpdated)
-            return NoContent();
-
-        return NotFound();
+        await mediator.Send(editJobCommand, cancellationToken);
+        
+        return NoContent();
     }
     
     [HttpPatch("status/{id:guid}")]
@@ -60,10 +58,8 @@ public class JobController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> EditJobInformation(Guid id, JobStatus jobStatus, CancellationToken cancellationToken)
     {
         var editJobStatusCommand = new EditJobStatusCommand(id, jobStatus);
-        var idUpdated = await mediator.Send(editJobStatusCommand, cancellationToken);
-        if (idUpdated)
-            return NoContent();
-
-        return NotFound();
+        await mediator.Send(editJobStatusCommand, cancellationToken);
+ 
+        return NoContent();
     }
 }

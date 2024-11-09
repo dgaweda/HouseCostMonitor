@@ -3,10 +3,13 @@ using HouseCostMonitor.Infrastructure.Extensions;
 
 namespace HouseCostMonitor.API;
 
+using HouseCostMonitor.API.Middlewares;
+
 public static class DependencyInjection
 {
-    public static void RegisterDI(this IServiceCollection services, IConfiguration config)
+    public static void RegisterDependencyInjection(this IServiceCollection services, IConfiguration config)
     {
+        services.AddScoped<ErrorHandlingMiddleware>();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddHttpContextAccessor();
@@ -15,7 +18,7 @@ public static class DependencyInjection
         services.AddApplication();
     }
 
-    public static void AddSwagger(this WebApplication app)
+    public static void UseSwagger(this WebApplication app)
     {
         if (!app.Environment.IsDevelopment()) return;
         

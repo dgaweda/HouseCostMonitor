@@ -2,6 +2,7 @@ namespace HouseCostMonitor.Infrastructure.Repositories.Base;
 
 using System.Linq.Expressions;
 using HouseCostMonitor.Domain.Entities.Base;
+using HouseCostMonitor.Domain.Exceptions;
 using HouseCostMonitor.Domain.Repositories.Base;
 using HouseCostMonitor.Infrastructure.Exceptions;
 using HouseCostMonitor.Infrastructure.Persistence;
@@ -20,14 +21,22 @@ internal class BaseRepository<T>(HouseCostMonitorDbContext dbContext) : IBaseRep
         return await _entity.Where(filter).ToListAsync(cancellationToken: cancellationToken);
     }
 
-    public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _entity.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
+        var entity = await _entity.FirstOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
+        if (entity is null)
+            throw new NotFoundException(typeof(T).Name);
+
+        return entity;
     }
     
-    public async Task<T?> GetAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
+    public async Task<T> GetAsync(Expression<Func<T, bool>> filter, CancellationToken cancellationToken = default)
     {
-        return await _entity.FirstOrDefaultAsync(filter, cancellationToken: cancellationToken);
+        var entity = await _entity.FirstOrDefaultAsync(filter, cancellationToken: cancellationToken);
+        if (entity is null)
+            throw new NotFoundException(typeof(T).Name);
+
+        return entity;
     }
 
     public async Task<Guid> AddAsync(T entity, CancellationToken cancellationToken = default)
@@ -47,13 +56,13 @@ internal class BaseRepository<T>(HouseCostMonitorDbContext dbContext) : IBaseRep
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<Guid?> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Guid> DeleteAsync(Guid id, CancellationToken cancellationToken = default)
     {
         var deletedRows = await _entity.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken: cancellationToken);
-        if (deletedRows > 0)
-            return id;
+        if (deletedRows == 0)
+            throw new NotFoundException(typeof(T).Name);
 
-        return null;
+        return id;
     }
 
     public async Task<Guid> UpdateAsync(T entity, CancellationToken cancellationToken = default)

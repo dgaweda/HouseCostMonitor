@@ -6,7 +6,7 @@ using HouseCostMonitor.Domain.Enums;
 using HouseCostMonitor.Domain.Repositories;
 using MediatR;
 
-public record EditExpenseCommand : IRequest<bool>
+public record EditExpenseCommand : IRequest
 {
     public Guid Id { get; set; }
     public ExpenseType Type { get; init; }
@@ -18,18 +18,13 @@ public record EditExpenseCommand : IRequest<bool>
     public Currency Currency { get; init; }
 }
 
-public class EditExpenseCommandHandler(IMapper mapper, IExpenseRepository expenseRepository) : IRequestHandler<EditExpenseCommand, bool>
+public class EditExpenseCommandHandler(IMapper mapper, IExpenseRepository expenseRepository) : IRequestHandler<EditExpenseCommand>
 {
-    public async Task<bool> Handle(EditExpenseCommand request, CancellationToken cancellationToken)
+    public async Task Handle(EditExpenseCommand request, CancellationToken cancellationToken)
     {
         var expenseToUpdate = await expenseRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (expenseToUpdate is null)
-            return false;
-        
         mapper.Map(request, expenseToUpdate);
-
+        
         await expenseRepository.UpdateAsync(expenseToUpdate, cancellationToken);
-
-        return true;
     }
 }

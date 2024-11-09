@@ -26,9 +26,6 @@ public class ExpenseController(IMediator mediator) : ControllerBase
     public async Task<ActionResult<ExpenseDto?>> GetById(Guid id, CancellationToken cancellationToken)
     {
         var expense = await mediator.Send(new GetExpenseByIdQuery(id), cancellationToken);
-        if (expense is null)
-            return NotFound();
-        
         return Ok(expense);
     }
 
@@ -45,11 +42,8 @@ public class ExpenseController(IMediator mediator) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> RemoveExpense(Guid id, CancellationToken cancellationToken)
     {
-        var isDeleted = await mediator.Send(new RemoveExpenseCommand(id), cancellationToken);
-        if (isDeleted)
-            return NoContent();
-        
-        return NotFound();
+        await mediator.Send(new RemoveExpenseCommand(id), cancellationToken);
+        return NoContent();
     }
     
     [HttpPatch("{id:guid}")]
@@ -58,10 +52,8 @@ public class ExpenseController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> EditExpense(Guid id, EditExpenseCommand editExpenseCommand, CancellationToken cancellationToken)
     {
         editExpenseCommand.Id = id;
-        var isUpdated = await mediator.Send(editExpenseCommand, cancellationToken);
-        if (isUpdated)
-            return NoContent();
-        
-        return NotFound();
+        await mediator.Send(editExpenseCommand, cancellationToken);
+
+        return NoContent();
     }
 }
