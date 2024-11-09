@@ -14,21 +14,16 @@ internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbCont
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>()
-            .HasMany(user => user.Jobs)
-            .WithOne()
-            .HasForeignKey(job => job.UserId);
-        
-        modelBuilder.Entity<User>()
-            .HasMany(user => user.Expenses)
-            .WithOne()
+        modelBuilder.Entity<Expense>()
+            .HasOne(expense => expense.User)
+            .WithMany(user => user.Expenses)
             .HasForeignKey(expense => expense.UserId);
-
-        modelBuilder.Entity<Job>()
-            .HasMany(job => job.Expenses)
-            .WithOne()
+        
+        modelBuilder.Entity<Expense>()
+            .HasOne(expense => expense.Job)
+            .WithMany(job => job.Expenses)
             .HasForeignKey(expense => expense.JobId);
-
+        
         modelBuilder.Entity<Expense>()
             .Property(expense => expense.UnitPrice)
             .HasPrecision(25, 2);
@@ -36,6 +31,11 @@ internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbCont
         modelBuilder.Entity<Expense>()
             .Property(expense => expense.TotalCost)
             .HasPrecision(25, 2);
+
+        modelBuilder.Entity<Job>()
+            .HasOne(job => job.User)
+            .WithMany(user => user.Jobs)
+            .HasForeignKey(job => job.UserId);
     }
 
     public override int SaveChanges()

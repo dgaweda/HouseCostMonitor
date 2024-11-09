@@ -11,7 +11,7 @@ public class TimeLoggingMiddleware(ILogger<TimeLoggingMiddleware> logger) : IMid
         var elapsedTime = Stopwatch.GetElapsedTime(timestamp);
         
         if(elapsedTime.Seconds >= 4)
-            logger.LogInformation("Request [HTTP {Verb}] at [{Path}] took {Time} ms", 
+            logger.LogWarning("Request [HTTP {Verb}] at [{Path}] took {Time} ms", 
                 context.Request.Method, 
                 context.Request.Path, 
                 elapsedTime.Milliseconds);
