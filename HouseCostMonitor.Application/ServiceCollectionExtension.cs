@@ -4,6 +4,7 @@ namespace HouseCostMonitor.Application.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using HouseCostMonitor.Application.User;
 
 public static class ServiceCollectionExtension
 {
@@ -15,5 +16,7 @@ public static class ServiceCollectionExtension
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceCollectionExtension).Assembly));
         
         // services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserContext, UserContext>();
+        services.AddHttpContextAccessor();
     }
 }

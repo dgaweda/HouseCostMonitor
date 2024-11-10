@@ -3,6 +3,6 @@
 public enum Role
 {
     Admin,
-    Homeowner,
-    Contractor
+    Owner,
+    User
 }
