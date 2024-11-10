@@ -6,9 +6,8 @@ namespace HouseCostMonitor.Infrastructure.Persistence;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbContext> options) : IdentityDbContext<User>(options)
+internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbContext> options) : IdentityDbContext<User, Role, Guid>(options)
 {
-    internal DbSet<User> Users { get; set; }
     internal DbSet<Job> Jobs { get; set; }
     internal DbSet<Expense> Expenses { get; set; }
 
@@ -16,10 +15,10 @@ internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbCont
     {
         base.OnModelCreating(modelBuilder);
 
-        // modelBuilder.Entity<Expense>()
-        //     .HasOne(expense => expense.User)
-        //     .WithMany(user => user.Expenses)
-        //     .HasForeignKey(expense => expense.UserId);
+        modelBuilder.Entity<Expense>()
+            .HasOne(expense => expense.User)
+            .WithMany(user => user.Expenses)
+            .HasForeignKey(expense => expense.UserId);
         
         modelBuilder.Entity<Expense>()
             .HasOne(expense => expense.Job)
@@ -34,10 +33,10 @@ internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbCont
             .Property(expense => expense.TotalCost)
             .HasPrecision(25, 2);
 
-        // modelBuilder.Entity<Job>()
-        //     .HasOne(job => job.User)
-        //     .WithMany(user => user.Jobs)
-        //     .HasForeignKey(job => job.UserId);
+        modelBuilder.Entity<Job>()
+            .HasOne(job => job.User)
+            .WithMany(user => user.Jobs)
+            .HasForeignKey(job => job.UserId);
     }
 
     public override int SaveChanges()

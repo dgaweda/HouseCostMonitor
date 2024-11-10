@@ -11,12 +11,8 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
     {
         if (await dbContext.Database.CanConnectAsync())
         {
-            // var user = GetUserSeedData();
             var expenses = GetExpenseSeedData();
             var jobs = GetJobSeedData(expenses);
-
-            // user.Jobs = [jobs[0]];
-            // user.Expenses = [expenses[0]];
 
             await AddIfNotExistAsync(dbContext.Expenses, expenses);
             await AddIfNotExistAsync(dbContext.Jobs, jobs);
@@ -43,7 +39,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             Quantity = 2,
             Supplier = "Allegro",
             PurchaseDate = new DateTime(2024, 09, 30),
-            // UserId = null,
             JobId = null,
         },
         new Expense
@@ -108,7 +103,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
                 Duration = new TimeSpan(7, 0, 0, 0), // 7 days
                 CreatedBy = "John Doe",
                 JobStatus = JobStatus.InProgress,
-                UserId = null,
+                // UserId = null,
                 Expenses =
                 [
                     expenses[1],
@@ -142,18 +137,4 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             }
         ];
     }
-    // private static User GetUserSeedData()
-    // {
-    //     return new User
-    //     {
-    //         Username = "daga",
-    //         PasswordHash = "hashed_password_example",
-    //         Email = "daga@example.com",
-    //         Role = Role.Admin,
-    //         Firstname = "Dariusz",
-    //         Lastname = "Gaweda",
-    //         LastLoginDate = null
-    //     };
-    // }
-    
 }

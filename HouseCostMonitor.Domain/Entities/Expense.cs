@@ -13,10 +13,11 @@ public class Expense : BaseEntity
     public DateTime PurchaseDate { get; set; }
     public decimal TotalCost { get; set; }
     public Currency Currency { get; set; } = Currency.PLN;
-    // public Guid? UserId { get; set; }
+    
+    public Guid? UserId { get; set; }
     public Guid? JobId { get; set; }
 
-    // public User? User { get; set; }
+    public User? User { get; set; }
     public Job? Job { get; set; }
 
     public void CalculateTotalCost()

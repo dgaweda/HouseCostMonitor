@@ -1,6 +1,6 @@
 ﻿namespace HouseCostMonitor.Domain.Enums;
 
-public enum Role
+public enum RoleType
 {
     Admin,
     Owner,

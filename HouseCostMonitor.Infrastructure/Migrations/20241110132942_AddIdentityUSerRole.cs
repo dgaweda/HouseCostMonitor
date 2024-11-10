@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HouseCostMonitor.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentityUser_RemoveOldUserEntityRelations : Migration
+    public partial class AddIdentityUSerRole : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,10 +19,6 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 name: "FK_Jobs_Users_UserId",
                 table: "Jobs");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Jobs_UserId",
-                table: "Jobs");
-
             migrationBuilder.DropPrimaryKey(
                 name: "PK_Users",
                 table: "Users");
@@ -32,15 +28,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 table: "Users");
 
             migrationBuilder.DropColumn(
-                name: "Firstname",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
                 name: "LastModified",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "Lastname",
                 table: "Users");
 
             migrationBuilder.RenameTable(
@@ -56,21 +44,6 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 name: "Role",
                 table: "AspNetUsers",
                 newName: "AccessFailedCount");
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserId1",
-                table: "Jobs",
-                type: "nvarchar(450)",
-                nullable: true);
-
-            migrationBuilder.AlterColumn<string>(
-                name: "UserId",
-                table: "Expenses",
-                type: "nvarchar(450)",
-                nullable: true,
-                oldClrType: typeof(Guid),
-                oldType: "uniqueidentifier",
-                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "UserName",
@@ -90,6 +63,24 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 oldType: "nvarchar(max)");
 
             migrationBuilder.AlterColumn<string>(
+                name: "Lastname",
+                table: "AspNetUsers",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Firstname",
+                table: "AspNetUsers",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<string>(
                 name: "Email",
                 table: "AspNetUsers",
                 type: "nvarchar(256)",
@@ -98,18 +89,16 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "Id",
-                table: "AspNetUsers",
-                type: "nvarchar(450)",
-                nullable: false,
-                oldClrType: typeof(Guid),
-                oldType: "uniqueidentifier");
-
             migrationBuilder.AddColumn<string>(
                 name: "ConcurrencyStamp",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<DateOnly>(
+                name: "DateOfBirth",
+                table: "AspNetUsers",
+                type: "date",
                 nullable: true);
 
             migrationBuilder.AddColumn<bool>(
@@ -159,6 +148,12 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: false);
 
+            migrationBuilder.AddColumn<Guid>(
+                name: "RoleId",
+                table: "AspNetUsers",
+                type: "uniqueidentifier",
+                nullable: true);
+
             migrationBuilder.AddColumn<string>(
                 name: "SecurityStamp",
                 table: "AspNetUsers",
@@ -181,7 +176,8 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleType = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -197,7 +193,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -219,7 +215,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,7 +232,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -258,7 +254,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -277,8 +273,8 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -298,14 +294,14 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Jobs_UserId1",
-                table: "Jobs",
-                column: "UserId1");
-
-            migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_RoleId",
+                table: "AspNetUsers",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -342,6 +338,13 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 column: "RoleId");
 
             migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUsers_AspNetRoles_RoleId",
+                table: "AspNetUsers",
+                column: "RoleId",
+                principalTable: "AspNetRoles",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Expenses_AspNetUsers_UserId",
                 table: "Expenses",
                 column: "UserId",
@@ -349,9 +352,9 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Jobs_AspNetUsers_UserId1",
+                name: "FK_Jobs_AspNetUsers_UserId",
                 table: "Jobs",
-                column: "UserId1",
+                column: "UserId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id");
         }
@@ -360,11 +363,15 @@ namespace HouseCostMonitor.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_AspNetUsers_AspNetRoles_RoleId",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Expenses_AspNetUsers_UserId",
                 table: "Expenses");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Jobs_AspNetUsers_UserId1",
+                name: "FK_Jobs_AspNetUsers_UserId",
                 table: "Jobs");
 
             migrationBuilder.DropTable(
@@ -385,10 +392,6 @@ namespace HouseCostMonitor.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Jobs_UserId1",
-                table: "Jobs");
-
             migrationBuilder.DropPrimaryKey(
                 name: "PK_AspNetUsers",
                 table: "AspNetUsers");
@@ -398,15 +401,19 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.DropIndex(
+                name: "IX_AspNetUsers_RoleId",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
-                name: "UserId1",
-                table: "Jobs");
+                name: "ConcurrencyStamp",
+                table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
-                name: "ConcurrencyStamp",
+                name: "DateOfBirth",
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
@@ -438,6 +445,10 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 table: "AspNetUsers");
 
             migrationBuilder.DropColumn(
+                name: "RoleId",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
                 name: "SecurityStamp",
                 table: "AspNetUsers");
 
@@ -458,15 +469,6 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 name: "AccessFailedCount",
                 table: "Users",
                 newName: "Role");
-
-            migrationBuilder.AlterColumn<Guid>(
-                name: "UserId",
-                table: "Expenses",
-                type: "uniqueidentifier",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)",
-                oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Username",
@@ -490,6 +492,24 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
+                name: "Lastname",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Firstname",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
                 name: "Email",
                 table: "Users",
                 type: "nvarchar(max)",
@@ -500,14 +520,6 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 oldMaxLength: 256,
                 oldNullable: true);
 
-            migrationBuilder.AlterColumn<Guid>(
-                name: "Id",
-                table: "Users",
-                type: "uniqueidentifier",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
-
             migrationBuilder.AddColumn<DateTime>(
                 name: "CreatedAt",
                 table: "Users",
@@ -515,35 +527,16 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-            migrationBuilder.AddColumn<string>(
-                name: "Firstname",
-                table: "Users",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
             migrationBuilder.AddColumn<DateTime>(
                 name: "LastModified",
                 table: "Users",
                 type: "datetime2",
                 nullable: true);
 
-            migrationBuilder.AddColumn<string>(
-                name: "Lastname",
-                table: "Users",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Users",
                 table: "Users",
                 column: "Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Jobs_UserId",
-                table: "Jobs",
-                column: "UserId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Expenses_Users_UserId",

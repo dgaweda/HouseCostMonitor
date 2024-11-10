@@ -1,20 +1,18 @@
-﻿using HouseCostMonitor.Domain.Entities.Base;
-using HouseCostMonitor.Domain.Enums;
-
+﻿
 namespace HouseCostMonitor.Domain.Entities;
 
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-public class User : IdentityUser
+public class User : IdentityUser<Guid>
 {
-    // public string Username { get; set; } = default!;
-    // public string PasswordHash { get; set; } = default!;
-    // public string Email { get; set; } = default!;
-    // public Role Role { get; set; }
-    // public string Firstname { get; set; } = default!;
-    // public string Lastname { get; set; } = default!;
+    [MaxLength(255)]
+    public string Firstname { get; set; } = default!;
+    
+    [MaxLength(255)]
+    public string Lastname { get; set; } = default!;
+    public DateOnly? DateOfBirth { get; set; }
     public DateTime? LastLoginDate { get; set; }
-    //
     public List<Job> Jobs { get; set; } = [];
     public List<Expense> Expenses { get; set; } = [];
     

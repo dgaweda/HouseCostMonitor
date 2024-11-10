@@ -5,7 +5,7 @@
 namespace HouseCostMonitor.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ModifyRelations : Migration
+    public partial class AddelationUserToRole : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
