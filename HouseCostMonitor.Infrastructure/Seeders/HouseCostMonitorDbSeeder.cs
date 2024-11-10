@@ -11,17 +11,15 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
     {
         if (await dbContext.Database.CanConnectAsync())
         {
-            var user = GetUserSeedData();
-            var expenses = GetExpenseSeedData(user);
-            var jobs = GetJobSeedData(expenses, user);
+            // var user = GetUserSeedData();
+            var expenses = GetExpenseSeedData();
+            var jobs = GetJobSeedData(expenses);
 
-            user.Jobs = [jobs[0]];
-            user.Expenses = [expenses[0]];
+            // user.Jobs = [jobs[0]];
+            // user.Expenses = [expenses[0]];
 
             await AddIfNotExistAsync(dbContext.Expenses, expenses);
             await AddIfNotExistAsync(dbContext.Jobs, jobs);
-            await AddIfNotExistAsync(dbContext.Users, [user]);
-            
 
             await dbContext.SaveChangesAsync();
         }
@@ -35,7 +33,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
         }
     }
 
-    private static List<Expense> GetExpenseSeedData(User user) =>
+    private static List<Expense> GetExpenseSeedData() =>
     [
          new Expense
         {
@@ -45,7 +43,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             Quantity = 2,
             Supplier = "Allegro",
             PurchaseDate = new DateTime(2024, 09, 30),
-            UserId = null,
+            // UserId = null,
             JobId = null,
         },
         new Expense
@@ -100,7 +98,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
         }
     ];
     
-    private static List<Job> GetJobSeedData(IReadOnlyList<Expense> expenses, User user)
+    private static List<Job> GetJobSeedData(IReadOnlyList<Expense> expenses)
     {
         return
         [
@@ -144,18 +142,18 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             }
         ];
     }
-    private static User GetUserSeedData()
-    {
-        return new User
-        {
-            Username = "daga",
-            PasswordHash = "hashed_password_example",
-            Email = "daga@example.com",
-            Role = Role.Admin,
-            Firstname = "Dariusz",
-            Lastname = "Gaweda",
-            LastLoginDate = null
-        };
-    }
+    // private static User GetUserSeedData()
+    // {
+    //     return new User
+    //     {
+    //         Username = "daga",
+    //         PasswordHash = "hashed_password_example",
+    //         Email = "daga@example.com",
+    //         Role = Role.Admin,
+    //         Firstname = "Dariusz",
+    //         Lastname = "Gaweda",
+    //         LastLoginDate = null
+    //     };
+    // }
     
 }

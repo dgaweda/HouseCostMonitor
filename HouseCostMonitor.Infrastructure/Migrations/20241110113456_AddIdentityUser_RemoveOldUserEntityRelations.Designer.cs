@@ -4,6 +4,7 @@ using HouseCostMonitor.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseCostMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(HouseCostMonitorDbContext))]
-    partial class HouseCostMonitorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241110113456_AddIdentityUser_RemoveOldUserEntityRelations")]
+    partial class AddIdentityUser_RemoveOldUserEntityRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,17 +7,17 @@ using Microsoft.AspNetCore.Identity;
 
 public class User : IdentityUser
 {
-    public string Username { get; set; } = default!;
-    public string PasswordHash { get; set; } = default!;
-    public string Email { get; set; } = default!;
-    public Role Role { get; set; }
-    public string Firstname { get; set; } = default!;
-    public string Lastname { get; set; } = default!;
+    // public string Username { get; set; } = default!;
+    // public string PasswordHash { get; set; } = default!;
+    // public string Email { get; set; } = default!;
+    // public Role Role { get; set; }
+    // public string Firstname { get; set; } = default!;
+    // public string Lastname { get; set; } = default!;
     public DateTime? LastLoginDate { get; set; }
-    
+    //
     public List<Job> Jobs { get; set; } = [];
     public List<Expense> Expenses { get; set; } = [];
-
+    
     public void AddJobs(IEnumerable<Job> jobs)
     {
         Jobs.AddRange(jobs);
@@ -27,7 +27,7 @@ public class User : IdentityUser
     {
         Expenses.AddRange(expenses);
     }
-
+    
     public void RemoveUserJobs(IEnumerable<Guid> jobIds)
     {
         Jobs.RemoveAll(job => jobIds.Contains(job.Id));
