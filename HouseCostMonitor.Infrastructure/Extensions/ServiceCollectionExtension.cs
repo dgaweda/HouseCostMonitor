@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HouseCostMonitor.Infrastructure.Extensions;
 
+using HouseCostMonitor.Domain.Entities;
+
 public static class ServiceCollectionExtension
 {
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
@@ -17,10 +19,13 @@ public static class ServiceCollectionExtension
             .UseSqlServer(connectionString)
             .EnableSensitiveDataLogging());
 
+        services.AddIdentityApiEndpoints<User>()
+            .AddEntityFrameworkStores<HouseCostMonitorDbContext>();
+        
         services.AddScoped<IHouseCostMonitorDbSeeder, HouseCostMonitorDbSeeder>();
         
         services.AddScoped<IExpenseRepository, ExpenseRepository>();
         services.AddScoped<IJobRepository, JobRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
+        // services.AddScoped<IUserRepository, UserRepository>();
     }
 }

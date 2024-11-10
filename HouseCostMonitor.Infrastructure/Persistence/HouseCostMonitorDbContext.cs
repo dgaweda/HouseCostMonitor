@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HouseCostMonitor.Infrastructure.Persistence;
 
-internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbContext> options) : DbContext(options)
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+
+internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbContext> options) : IdentityDbContext<User>(options)
 {
     internal DbSet<User> Users { get; set; }
     internal DbSet<Job> Jobs { get; set; }

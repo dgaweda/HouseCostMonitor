@@ -3,7 +3,9 @@ using HouseCostMonitor.Domain.Enums;
 
 namespace HouseCostMonitor.Domain.Entities;
 
-public class User : BaseEntity
+using Microsoft.AspNetCore.Identity;
+
+public class User : IdentityUser
 {
     public string Username { get; set; } = default!;
     public string PasswordHash { get; set; } = default!;

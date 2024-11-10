@@ -5,7 +5,7 @@ using HouseCostMonitor.Domain.Repositories;
 using HouseCostMonitor.Infrastructure.Persistence;
 using HouseCostMonitor.Infrastructure.Repositories.Base;
 
-internal class UserRepository(HouseCostMonitorDbContext dbContext): BaseRepository<User>(dbContext), IUserRepository
-{
-    
-}
+// internal class UserRepository(HouseCostMonitorDbContext dbContext): BaseRepository<User>(dbContext), IUserRepository
+// {
+//     
+// }

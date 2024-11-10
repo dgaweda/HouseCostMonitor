@@ -45,7 +45,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             Quantity = 2,
             Supplier = "Allegro",
             PurchaseDate = new DateTime(2024, 09, 30),
-            UserId = user.Id,
+            UserId = null,
             JobId = null,
         },
         new Expense
@@ -110,7 +110,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
                 Duration = new TimeSpan(7, 0, 0, 0), // 7 days
                 CreatedBy = "John Doe",
                 JobStatus = JobStatus.InProgress,
-                UserId = user.Id,
+                UserId = null,
                 Expenses =
                 [
                     expenses[1],

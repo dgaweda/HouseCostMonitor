@@ -1,6 +1,7 @@
 namespace HouseCostMonitor.Application.Job.Commands.EditJob;
 
 using AutoMapper;
+using HouseCostMonitor.Domain.Enums;
 using HouseCostMonitor.Domain.Repositories;
 using MediatR;
 
@@ -9,6 +10,7 @@ public record EditJobCommand : IRequest
     public Guid Id { get; set; }
     public string? Description { get; init; }
     public TimeSpan? Duration { get; init; }
+    public JobStatus? JobStatus { get; set; }
 }
 
 public class EditJobCommandHandler(IMapper mapper, IJobRepository jobRepository) : IRequestHandler<EditJobCommand>
