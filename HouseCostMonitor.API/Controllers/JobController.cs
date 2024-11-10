@@ -7,11 +7,12 @@ using HouseCostMonitor.Application.Job.Commands.EditJob;
 using HouseCostMonitor.Application.Job.Dtos;
 using HouseCostMonitor.Application.Job.Queries.GetJobById;
 using HouseCostMonitor.Application.Job.Queries.GetJobs;
-using HouseCostMonitor.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/job")]
+[Authorize]
 public class JobController(IMediator mediator) : ControllerBase
 {
     [HttpGet]

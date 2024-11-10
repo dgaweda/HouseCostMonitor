@@ -9,9 +9,11 @@ using HouseCostMonitor.Application.Expense.Dtos;
 using HouseCostMonitor.Application.Expense.Queries.GetExpenseById;
 using HouseCostMonitor.Application.Expense.Queries.GetExpenses;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 
 [ApiController]
 [Route("api/expense")]
+[Authorize]
 public class ExpenseController(IMediator mediator) : ControllerBase
 {
     [HttpGet]

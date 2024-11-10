@@ -3,20 +3,50 @@ using HouseCostMonitor.Infrastructure.Extensions;
 
 namespace HouseCostMonitor.API;
 
+using System.Text.Json.Serialization;
 using HouseCostMonitor.API.Middlewares;
+using Microsoft.OpenApi.Models;
+using Serilog;
 
 public static class DependencyInjection
 {
-    public static void RegisterDependencyInjection(this IServiceCollection services, IConfiguration config)
+    public static void RegisterDependencyInjection(this WebApplicationBuilder builder, IConfiguration config)
     {
-        services.AddScoped<TimeLoggingMiddleware>();
-        services.AddScoped<ErrorHandlingMiddleware>();
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
-        services.AddHttpContextAccessor();
+        builder.Services.AddAuthentication();
+        builder.Services
+            .AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
         
-        services.AddInfrastructure(config);
-        services.AddApplication();
+        builder.Services.AddScoped<TimeLoggingMiddleware>();
+        builder.Services.AddScoped<ErrorHandlingMiddleware>();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(c =>
+        {
+            c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer"
+            });
+            
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference() { Type = ReferenceType.SecurityScheme, Id = "bearerAuth"}
+                    },
+                    []
+                }
+            });
+        });
+        builder.Services.AddHttpContextAccessor();
+        
+        builder.Services.AddInfrastructure(config);
+        builder.Services.AddApplication();
+        builder.Host.UseSerilog((context, cfg) => cfg.ReadFrom.Configuration(context.Configuration));
     }
 
     public static void AddSwagger(this WebApplication app)

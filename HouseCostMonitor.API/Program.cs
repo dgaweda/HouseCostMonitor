@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using HouseCostMonitor.API;
 using HouseCostMonitor.API.Middlewares;
 using HouseCostMonitor.Domain.Entities;
@@ -9,13 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
-
-builder.Services.RegisterDependencyInjection(builder.Configuration);
-builder.Host.UseSerilog((context, cfg) => cfg.ReadFrom.Configuration(context.Configuration));
+builder.RegisterDependencyInjection(builder.Configuration);
 
 var app = builder.Build();
 
@@ -31,7 +24,7 @@ app.AddSwagger();
 
 app.UseHttpsRedirection();
 
-app.MapIdentityApi<User>();
+app.MapGroup("api/identity").MapIdentityApi<User>();
 
 app.UseAuthorization();
 
