@@ -1,15 +1,16 @@
 ﻿namespace HouseCostMonitor.Domain.Enums;
 
 using System.ComponentModel;
+using HouseCostMonitor.Domain.Constants;
 
 public enum RoleType
 {
-    [Description("Admin")]
+    [Description(Roles.Admin)]
     Admin,
     
-    [Description("Owner")]
+    [Description(Roles.Owner)]
     Owner,
     
-    [Description("User")]
+    [Description(Roles.User)]
     User
 }
