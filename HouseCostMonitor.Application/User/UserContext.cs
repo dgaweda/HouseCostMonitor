@@ -1,23 +1,24 @@
 namespace HouseCostMonitor.Application.User;
 
 using System.Security.Claims;
+using HouseCostMonitor.Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 
 public interface IUserContext
 {
-    CurrentUser? GetCurrentUser();
+    CurrentUser GetCurrentUser();
 }
 
 public class UserContext(IHttpContextAccessor httpContextAccessor) : IUserContext
 {
-    public CurrentUser? GetCurrentUser()
+    public CurrentUser GetCurrentUser()
     {
         var user = httpContextAccessor?.HttpContext?.User;
         if (user is null)
             throw new InvalidOperationException("User context is not present");
 
         if (user.Identity is not { IsAuthenticated: true })
-            return null;
+            throw new NotFoundException("User.Identity");
 
         var userId = user.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
         var email = user.FindFirst(c => c.Type == ClaimTypes.Email)!.Value;

@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Identity;
 public class User : IdentityUser<Guid>
 {
     [MaxLength(255)]
-    public string Firstname { get; set; } = default!;
+    public string? Firstname { get; set; } = default!;
     
     [MaxLength(255)]
-    public string Lastname { get; set; } = default!;
+    public string? Lastname { get; set; } = default!;
     public DateOnly? DateOfBirth { get; set; }
     public DateTime? LastLoginDate { get; set; }
     public List<Job> Jobs { get; set; } = [];
