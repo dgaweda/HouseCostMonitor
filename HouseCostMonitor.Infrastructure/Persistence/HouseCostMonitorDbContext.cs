@@ -37,6 +37,11 @@ internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbCont
             .HasOne(job => job.User)
             .WithMany(user => user.Jobs)
             .HasForeignKey(job => job.UserId);
+
+        modelBuilder.Entity<User>()
+            .HasOne(user => user.Role)
+            .WithMany(role => role.Users)
+            .HasForeignKey(user => user.RoleId);
     }
 
     public override int SaveChanges()

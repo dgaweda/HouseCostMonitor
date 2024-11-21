@@ -6,4 +6,6 @@ using Microsoft.AspNetCore.Identity;
 public class Role : IdentityRole<Guid>
 {
     public RoleType RoleType { get; set; }
+
+    public List<User> Users { get; set; }
 }

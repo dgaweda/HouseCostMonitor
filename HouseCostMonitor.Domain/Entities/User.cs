@@ -7,14 +7,16 @@ using Microsoft.AspNetCore.Identity;
 public class User : IdentityUser<Guid>
 {
     [MaxLength(255)]
-    public string? Firstname { get; set; } = default!;
+    public string? Firstname { get; set; }
     
     [MaxLength(255)]
-    public string? Lastname { get; set; } = default!;
+    public string? Lastname { get; set; }
     public DateOnly? DateOfBirth { get; set; }
     public DateTime? LastLoginDate { get; set; }
     public List<Job> Jobs { get; set; } = [];
     public List<Expense> Expenses { get; set; } = [];
+    public Role? Role { get; set; }
+    public Guid? RoleId { get; set; }
     
     public void AddJobs(IEnumerable<Job> jobs)
     {
@@ -34,5 +36,10 @@ public class User : IdentityUser<Guid>
     public void RemoveUserExpenses(IEnumerable<Guid> expenseIds)
     {
         Expenses.RemoveAll(job => expenseIds.Contains(job.Id));
+    }
+
+    public void SetRole(Role role)
+    {
+        Role = role;
     }
 }

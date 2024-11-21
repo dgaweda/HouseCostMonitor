@@ -10,8 +10,7 @@ public record UpdateUserRoleCommand(Guid? UserId, string? Email, RoleType RoleTy
 
 public class UpdateUserRoleCommandHandler(
     IUserStore<User> userStore, 
-    IRoleStore<Role> roleStore, 
-    IUserRoleStore<User> userRoleStore) : IRequestHandler<UpdateUserRoleCommand>
+    IRoleStore<Role> roleStore) : IRequestHandler<UpdateUserRoleCommand>
 {
     public async Task Handle(UpdateUserRoleCommand request, CancellationToken cancellationToken)
     {
@@ -28,6 +27,8 @@ public class UpdateUserRoleCommandHandler(
         if (role is null)
             throw new NotFoundException(nameof(Role), request.RoleType.ToString());
 
-        await userRoleStore.AddToRoleAsync(dbUser, role.Name!, cancellationToken);
+        dbUser.SetRole(role);
+
+        await userStore.UpdateAsync(dbUser, cancellationToken);
     }
 }
