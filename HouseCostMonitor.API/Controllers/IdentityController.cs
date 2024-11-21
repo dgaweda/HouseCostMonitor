@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/identity")]
-public class IdentityController(IMediator mediator) : ControllerBase
+[Route("api/user")]
+public class UserController(IMediator mediator) : ControllerBase
 {
-    [HttpPatch("user")]
+    [HttpPatch]
     [Authorize]
     public async Task<IActionResult> UpdateUserDetails(UpdateUserDetailsCommand command, CancellationToken cancellationToken)
     {

@@ -24,8 +24,8 @@ app.AddSwagger();
 
 app.UseHttpsRedirection();
 
-app.MapGroup("api/identity")
-    .WithTags("Identity")
+app.MapGroup("api/user")
+    .WithTags("User")
     .MapIdentityApi<User>();
 
 app.UseAuthorization();
