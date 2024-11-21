@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HouseCostMonitor.Infrastructure.Seeders;
 
+using HouseCostMonitor.Infrastructure.Extensions;
+
 internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : IHouseCostMonitorDbSeeder
 {
     public async Task Seed()
@@ -16,6 +18,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
 
             await AddIfNotExistAsync(dbContext.Expenses, expenses);
             await AddIfNotExistAsync(dbContext.Jobs, jobs);
+            await AddIfNotExistAsync(dbContext.Roles, GetRoles());
 
             await dbContext.SaveChangesAsync();
         }
@@ -137,4 +140,36 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             }
         ];
     }
+
+    private static List<Role> GetRoles()
+    {
+        var adminRoleId = Guid.Parse("c58709f6-3997-4987-9dbf-a83a72c82809");
+        var ownerRoleId = Guid.Parse("21e54bee-47d9-415e-b09c-1db273583cef");
+        var userRoleId = Guid.Parse("4a3af547-6cc6-4ec0-803b-438ea0af1487");
+        
+        return [
+            new Role
+            {
+                Id = adminRoleId,
+                Name = RoleType.Admin.GetEnumDescription(),
+                RoleType = RoleType.Admin,
+                NormalizedName = RoleType.Admin.GetEnumDescription()
+            },
+            new Role
+            {
+                Id = ownerRoleId,
+                Name = RoleType.Owner.GetEnumDescription(),
+                RoleType = RoleType.Owner,
+                NormalizedName = RoleType.Owner.GetEnumDescription()
+            },
+            new Role
+            {
+                Id = userRoleId,
+                Name = RoleType.User.GetEnumDescription(),
+                RoleType = RoleType.User,
+                NormalizedName = RoleType.User.GetEnumDescription()
+            }
+        ];
+    }
+    
 }

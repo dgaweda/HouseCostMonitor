@@ -16,4 +16,20 @@ public class UserController(IMediator mediator) : ControllerBase
         await mediator.Send(command, cancellationToken);
         return NoContent();
     }
+
+    [HttpDelete]
+    [Authorize]
+    public async Task<IActionResult> RemoveUser(RemoveUserCommand command, CancellationToken cancellationToken)
+    {
+        await mediator.Send(command, cancellationToken);
+        return NoContent();
+    }
+    
+    [HttpPatch("role")]
+    [Authorize]
+    public async Task<IActionResult> UpdateUserRole(UpdateUserRoleCommand command, CancellationToken cancellationToken)
+    {
+        await mediator.Send(command, cancellationToken);
+        return NoContent();
+    }
 }

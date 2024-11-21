@@ -11,11 +11,9 @@ public static class ServiceCollectionExtension
     public static void AddApplication(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(ServiceCollectionExtension).Assembly);
-        services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtension).Assembly)
-            .AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssembly(typeof(ServiceCollectionExtension).Assembly).AddFluentValidationAutoValidation();
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ServiceCollectionExtension).Assembly));
         
-        // services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserContext, UserContext>();
         services.AddHttpContextAccessor();
     }
