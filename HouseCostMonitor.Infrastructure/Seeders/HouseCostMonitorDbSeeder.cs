@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HouseCostMonitor.Infrastructure.Seeders;
 
+using System.Collections;
 using HouseCostMonitor.Domain.Constants;
 
 internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : IHouseCostMonitorDbSeeder

@@ -2,7 +2,13 @@
 @port = 7072
 @HouseCostMonitor.API_HostAddress = {{host}}:{{port}}
 
-GET {{HouseCostMonitor.API_HostAddress}}/weatherforecast/
+POST {{HouseCostMonitor.API_HostAddress}}/api/user/login
 Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "zaq1@WSX"
+}
 
 ###

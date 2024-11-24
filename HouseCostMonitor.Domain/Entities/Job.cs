@@ -22,8 +22,8 @@ public class Job : BaseEntity
     
     public Guid? UserId { get; set; }
     public User? User { get; set; }
-    public Guid HouseId { get; set; }
-    public House House { get; set; } = new();
+    public Guid? HouseId { get; set; }
+    public House? House { get; set; }
     public List<Expense> Expenses { get; set; } = [];
 
     public void SetJobStatus(JobStatus jobStatus)

@@ -47,11 +47,6 @@ internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbCont
         modelBuilder.Entity<House>()
             .Property(house => house.HouseSquareFootage)
             .HasPrecision(25, 2);
-
-        modelBuilder.Entity<House>()
-            .HasOne(house => house.Owner)
-            .WithMany(owner => owner.Houses)
-            .HasForeignKey(house => house.OwnerId);
     }
 
     public override int SaveChanges()

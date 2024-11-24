@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseCostMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(HouseCostMonitorDbContext))]
-    [Migration("20241124135906_AddOwnerToHouse")]
-    partial class AddOwnerToHouse
+    [Migration("20241124142958_MakeHOusePropNullableOnJob")]
+    partial class MakeHOusePropNullableOnJob
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,12 +101,16 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("OwnerId")
+                    b.Property<string>("Owner")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Houses");
                 });
@@ -133,7 +137,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                     b.Property<long?>("Duration")
                         .HasColumnType("bigint");
 
-                    b.Property<Guid>("HouseId")
+                    b.Property<Guid?>("HouseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("JobStatus")
@@ -388,20 +392,16 @@ namespace HouseCostMonitor.Infrastructure.Migrations
 
             modelBuilder.Entity("HouseCostMonitor.Domain.Entities.House", b =>
                 {
-                    b.HasOne("HouseCostMonitor.Domain.Entities.User", "Owner")
+                    b.HasOne("HouseCostMonitor.Domain.Entities.User", null)
                         .WithMany("Houses")
-                        .HasForeignKey("OwnerId");
-
-                    b.Navigation("Owner");
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("HouseCostMonitor.Domain.Entities.Job", b =>
                 {
                     b.HasOne("HouseCostMonitor.Domain.Entities.House", "House")
                         .WithMany("Jobs")
-                        .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HouseId");
 
                     b.HasOne("HouseCostMonitor.Domain.Entities.User", "User")
                         .WithMany("Jobs")
