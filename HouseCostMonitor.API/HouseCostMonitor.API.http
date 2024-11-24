@@ -1,6 +1,9 @@
 @host = https://localhost
 @port = 7072
 @HouseCostMonitor.API_HostAddress = {{host}}:{{port}}
+@token = CfDJ8MfrubyPRrdGh3nJnPByv_mT6o_7ms0DwgPr4LMx302mU1eouamGD21PbklvSrcxvV5Tjd61FXVKxvVbxXCVl411ySz9j46lJwNlSe4V95LBvqaifM6_TUTf8NXNN7AJePAqUrTKoY0lFcpKGa484cKwL92OjNJWxSS8BVUllifauzmJx-1jnnit9H6g4opDhkd9kmZ5jYNo5dz7QYP7ZUDZUbZ8kmLYM9odAGm-QvVFB_b5yX8sLJUHxh07E31_TQfAur8iCOF4eUzlpwPAr910HkkuWEwt0IAZfpfA1cFg7pb0YzRvSlQOzJ6tMYS-Y_AqgdPBcVhldRejFF_lY5Z2yy-21iT95J2f-DwaLxMv2Li20Cu4QjjJRv6Pmd0CQDJImXkFiVg947jTjPJ1FRhP9bCTGAbkaLdpD1Au4wzCr7qhFF5c7letx-qnErOzzyss0UFWJW3BAALUKElGtPFUuED6qHocYR0KpfaddMFWbEBR6a023Z6hZcmyZ8_eH8Q4jhyElPLC0DRirfQA83nN2fOqgoWk2u7YpHMpExX6e_0eLjbmss8bcM_4NnPXiMH7fO7TvArJpG1MME2vRVA8z_ax1SpMgyejA7ifHlMfIGTVpbzFVEoCphC5GlVN4mR8hG5uHR3QmE-qsYly7Oyfe0KBMNwCDTYCtGm92c6MCVB8LawgNjG3PlX8tb49ng
+
+@houseId = 4af09b5e-1063-4a98-ad1b-c94875e8c693
 
 POST {{HouseCostMonitor.API_HostAddress}}/api/user/login
 Accept: application/json
@@ -10,5 +13,19 @@ Content-Type: application/json
   "email": "admin@test.com",
   "password": "zaq1@WSX"
 }
+
+###
+
+GET {{HouseCostMonitor.API_HostAddress}}/api/house
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{ token }}
+
+###
+
+GET {{HouseCostMonitor.API_HostAddress}}/api/house/{{houseId}}
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ###

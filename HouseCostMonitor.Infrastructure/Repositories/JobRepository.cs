@@ -2,6 +2,7 @@ namespace HouseCostMonitor.Infrastructure.Repositories;
 
 using System.Linq.Expressions;
 using HouseCostMonitor.Domain.Entities;
+using HouseCostMonitor.Domain.Exceptions;
 using HouseCostMonitor.Domain.Repositories;
 using HouseCostMonitor.Infrastructure.Persistence;
 using HouseCostMonitor.Infrastructure.Repositories.Base;
@@ -15,5 +16,17 @@ internal class JobRepository(HouseCostMonitorDbContext dbContext) : BaseReposito
             return await dbContext.Jobs.Include(x => x.Expenses).ToListAsync(cancellationToken);
         
         return await dbContext.Jobs.Include(x => x.Expenses).Where(filter).ToListAsync(cancellationToken);
+    }
+    
+    public override async Task<Job> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        var job = await dbContext.Jobs
+            .Include(x => x.Expenses)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
+        
+        if (job is null)
+            throw new NotFoundException(nameof(Job));
+
+        return job;
     }
 }
