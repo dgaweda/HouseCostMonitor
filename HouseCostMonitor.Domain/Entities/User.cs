@@ -17,6 +17,7 @@ public class User : IdentityUser<Guid>
     public List<Expense> Expenses { get; set; } = [];
     public Role? Role { get; set; }
     public Guid? RoleId { get; set; }
+    public List<House> Houses { get; set; }
     
     public void AddJobs(IEnumerable<Job> jobs)
     {

@@ -4,6 +4,7 @@ using HouseCostMonitor.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HouseCostMonitor.Infrastructure.Migrations
 {
     [DbContext(typeof(HouseCostMonitorDbContext))]
-    partial class HouseCostMonitorDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241124135324_AddHouseEntity")]
+    partial class AddHouseEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,12 +101,7 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid?>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Houses");
                 });
@@ -383,15 +381,6 @@ namespace HouseCostMonitor.Infrastructure.Migrations
                     b.Navigation("Job");
                 });
 
-            modelBuilder.Entity("HouseCostMonitor.Domain.Entities.House", b =>
-                {
-                    b.HasOne("HouseCostMonitor.Domain.Entities.User", "Owner")
-                        .WithMany("Houses")
-                        .HasForeignKey("OwnerId");
-
-                    b.Navigation("Owner");
-                });
-
             modelBuilder.Entity("HouseCostMonitor.Domain.Entities.Job", b =>
                 {
                     b.HasOne("HouseCostMonitor.Domain.Entities.House", "House")
@@ -487,8 +476,6 @@ namespace HouseCostMonitor.Infrastructure.Migrations
             modelBuilder.Entity("HouseCostMonitor.Domain.Entities.User", b =>
                 {
                     b.Navigation("Expenses");
-
-                    b.Navigation("Houses");
 
                     b.Navigation("Jobs");
                 });
