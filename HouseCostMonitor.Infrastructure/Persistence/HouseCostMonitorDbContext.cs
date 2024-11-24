@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbContext> options) : IdentityDbContext<User, Role, Guid>(options)
 {
+    internal DbSet<House> Houses { get; set; }
     internal DbSet<Job> Jobs { get; set; }
     internal DbSet<Expense> Expenses { get; set; }
 
@@ -15,10 +16,10 @@ internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbCont
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<Expense>()
-            .HasOne(expense => expense.User)
-            .WithMany(user => user.Expenses)
-            .HasForeignKey(expense => expense.UserId);
+        modelBuilder.Entity<Job>()
+            .HasOne(job => job.House)
+            .WithMany(house => house.Jobs)
+            .HasForeignKey(job => job.HouseId);
         
         modelBuilder.Entity<Expense>()
             .HasOne(expense => expense.Job)
@@ -42,6 +43,10 @@ internal class HouseCostMonitorDbContext(DbContextOptions<HouseCostMonitorDbCont
             .HasOne(user => user.Role)
             .WithMany(role => role.Users)
             .HasForeignKey(user => user.RoleId);
+
+        modelBuilder.Entity<House>()
+            .Property(house => house.HouseSquareFootage)
+            .HasPrecision(25, 2);
     }
 
     public override int SaveChanges()

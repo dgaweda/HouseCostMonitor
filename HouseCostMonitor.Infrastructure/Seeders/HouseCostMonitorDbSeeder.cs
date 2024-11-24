@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HouseCostMonitor.Infrastructure.Seeders;
 
-using HouseCostMonitor.Infrastructure.Extensions;
+using HouseCostMonitor.Domain.Constants;
 
 internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : IHouseCostMonitorDbSeeder
 {
@@ -13,12 +13,15 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
     {
         if (await dbContext.Database.CanConnectAsync())
         {
-            var expenses = GetExpenseSeedData();
-            var jobs = GetJobSeedData(expenses);
-
+            var expenses = GetExpenses();
+            var jobs = GetJobs(expenses);
+            var roles = GetRoles();
+            var houses = GetHouses(jobs);
+            
             await AddIfNotExistAsync(dbContext.Expenses, expenses);
             await AddIfNotExistAsync(dbContext.Jobs, jobs);
-            await AddIfNotExistAsync(dbContext.Roles, GetRoles());
+            await AddIfNotExistAsync(dbContext.Roles, roles);
+            await AddIfNotExistAsync(dbContext.Houses, houses);
 
             await dbContext.SaveChangesAsync();
         }
@@ -32,7 +35,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
         }
     }
 
-    private static List<Expense> GetExpenseSeedData() =>
+    private static List<Expense> GetExpenses() =>
     [
          new Expense
         {
@@ -96,7 +99,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
         }
     ];
     
-    private static List<Job> GetJobSeedData(IReadOnlyList<Expense> expenses)
+    private static List<Job> GetJobs(IReadOnlyList<Expense> expenses)
     {
         return
         [
@@ -106,7 +109,6 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
                 Duration = new TimeSpan(7, 0, 0, 0), // 7 days
                 CreatedBy = "John Doe",
                 JobStatus = JobStatus.InProgress,
-                // UserId = null,
                 Expenses =
                 [
                     expenses[1],
@@ -141,7 +143,7 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
         ];
     }
 
-    private static List<Role> GetRoles()
+    private static IEnumerable<Role> GetRoles()
     {
         var adminRoleId = Guid.Parse("c58709f6-3997-4987-9dbf-a83a72c82809");
         var ownerRoleId = Guid.Parse("21e54bee-47d9-415e-b09c-1db273583cef");
@@ -151,23 +153,38 @@ internal class HouseCostMonitorDbSeeder(HouseCostMonitorDbContext dbContext) : I
             new Role
             {
                 Id = adminRoleId,
-                Name = RoleType.Admin.GetEnumDescription(),
+                Name = Roles.Admin,
                 RoleType = RoleType.Admin,
-                NormalizedName = RoleType.Admin.GetEnumDescription()
+                NormalizedName = Roles.Admin
             },
             new Role
             {
                 Id = ownerRoleId,
-                Name = RoleType.Owner.GetEnumDescription(),
+                Name = Roles.User,
                 RoleType = RoleType.Owner,
-                NormalizedName = RoleType.Owner.GetEnumDescription()
+                NormalizedName = Roles.Owner
             },
             new Role
             {
                 Id = userRoleId,
-                Name = RoleType.User.GetEnumDescription(),
+                Name = Roles.User,
                 RoleType = RoleType.User,
-                NormalizedName = RoleType.User.GetEnumDescription()
+                NormalizedName = Roles.User
+            }
+        ];
+    }
+
+    private static IEnumerable<House> GetHouses(IEnumerable<Job> jobs)
+    {
+        return
+        [
+            new House
+            {
+                Name = "My House",
+                HouseSquareFootage = 100,
+                Jobs = [
+                    jobs.First()
+                ]
             }
         ];
     }
